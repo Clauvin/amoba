@@ -38,6 +38,10 @@ pub fn main() {
         .with(components::base_side(), 1)
         .spawn();
 
+    let path_point_left = Entity::new()
+        .with(translation(), vec3(15., 15., 1.))
+        .spawn();
+
     query((components::health(), components::base_side())).each_frame(|list| {
         for (base_id, (health, side)) in list {
             if health <= 0 {
