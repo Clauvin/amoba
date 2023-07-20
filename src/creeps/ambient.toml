@@ -9,3 +9,8 @@ target_pos = { type = "Vec2", name = "target_pos", description = "target_pos", a
     "Debuggable",
     "Networked",
 ] }
+
+is_creep = { type = "Bool", name = "is_creep", description = "a creep, a NPC that is on the side of one of the teams", attributes = [
+    "Debuggable",
+    "Networked",
+] }
