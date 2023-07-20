@@ -4,6 +4,7 @@ name = "amoba"
 version = "0.0.1"
 
 includes = [
+    "src/creeps/ambient.toml",
     "src/scene/ambient.toml",
     "src/ui/ambient.toml",
     "src/player/ambient.toml",
