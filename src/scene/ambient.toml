@@ -9,3 +9,7 @@ base_side = { type = "U8", name = "base_side", description = "which side this ba
     "Debuggable",
     "Networked",
 ] }
+
+is_path_point = { type = "Bool", name = "is_path_point", description = "path points used by creeps to move through a lane", atributes = [
+    "Debuggable",
+] }
