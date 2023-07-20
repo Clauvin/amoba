@@ -40,6 +40,7 @@ pub fn main() {
 
     let path_point_left = Entity::new()
         .with(translation(), vec3(15., 15., 1.))
+        .with(components::is_path_point(), true)
         .spawn();
 
     query((components::health(), components::base_side())).each_frame(|list| {
