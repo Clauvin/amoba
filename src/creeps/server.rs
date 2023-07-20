@@ -9,6 +9,7 @@ use ambient_api::{
         prefab::prefab_from_url,
         animation::apply_animation_player
     },
+    ecs::query,
     concepts::make_transformable,
     entity::{add_component, self}, 
     prelude::{
@@ -22,6 +23,14 @@ const INIT_POS: f32 = std::f32::consts::FRAC_PI_2;
 #[main]
 pub fn main() {
     create_ranged_creep(Vec3{x:2., y:2., z:1.});
+
+    query(components::is_creep()).each_frame({
+        move |list| {
+            for model in list {
+                println!("{:?}",model);
+            }
+        }
+    });
 }
 
 fn create_ranged_creep(init_pos: Vec3) -> EntityId{
