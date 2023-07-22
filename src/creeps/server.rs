@@ -24,7 +24,11 @@ const INIT_POS: f32 = std::f32::consts::FRAC_PI_2;
 
 #[main]
 pub fn main() {
-    create_ranged_creep(Vec3{x:2., y:2., z:1.});
+    let ranged_idle = PlayClipFromUrlNode::new(
+        asset::url("assets/anim/Zombie Idle.fbx/animations/mixamo.com.anim").unwrap(),
+    );
+
+    create_ranged_creep(Vec3{x:2., y:2., z:1.}, ranged_idle);
 
     query(components::is_creep()).each_frame({
         move |list| {
@@ -114,13 +118,8 @@ pub fn main() {
     });
 }
 
-fn create_ranged_creep(init_pos: Vec3) -> EntityId{
-    let ranged_idle = PlayClipFromUrlNode::new(
-        asset::url("assets/anim/Zombie Idle.fbx/animations/mixamo.com.anim").unwrap(),
-    );
-
+fn create_ranged_creep(init_pos: Vec3, ranged_idle:PlayClipFromUrlNode) -> EntityId{
     let idle_player = AnimationPlayer::new(&ranged_idle);
-
 
     let model = Entity::new()
         .with_merge(make_transformable())
