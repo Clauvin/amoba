@@ -11,9 +11,11 @@ use ambient_api::{
     },
     ecs::query,
     concepts::make_transformable,
+    global::delta_time,
     entity::{add_component, self}, 
+    physics::move_character, 
     prelude::{
-        Quat, Entity, EntityId, Vec3, Vec2,
+        Quat, Entity, EntityId, Vec3, Vec2, Vec3Swizzles,
         vec3, 
     }, main, 
 };
@@ -27,7 +29,86 @@ pub fn main() {
     query(components::is_creep()).each_frame({
         move |list| {
             for model in list {
-                println!("{:?}",model);
+                //println!("{:?}",model);
+
+                let model = model.0;
+                
+                let anim_model = entity::get_component(model, components::anim_model()).unwrap();
+
+                let anim_state = entity::get_component(anim_model, components::anim_state()).unwrap();
+
+                if anim_state == vec![0.0, 0.0, 1.0] {
+                    continue;
+                }
+
+                let current_pos = entity::get_component(model, translation()).unwrap();
+
+                let target_pos = entity::get_component(model, components::target_pos()).unwrap();
+
+                let diff = target_pos - current_pos.xy();
+
+                if diff.length() < 1.0 {
+
+                    move_character(model, vec3(0., 0., -0.1), 0.01, delta_time());
+
+                    /*if anim_state != vec![0.0, 0.0, 1.0] {
+                        entity::set_component(
+                            anim_model,
+                            apply_animation_player(),
+                            idle_player.0,
+                        );
+                        entity::set_component(
+                            anim_model,
+                            components::anim_state(),
+                            vec![1.0, 0.0, 0.0],
+                        );
+                        continue;
+                    }*/
+                }
+
+
+                //-----------------------
+
+                    let target_direction = diff;
+                    let initial_direction: Vec2 = Vec2::new(1.0, 0.0);
+                    let dot = initial_direction.dot(target_direction);
+                    let det = initial_direction.x * target_direction.y
+                        - initial_direction.y * target_direction.x;
+                    let angle = det.atan2(dot);
+                    let rot: Quat = Quat::from_rotation_z(angle - INIT_POS);
+                    entity::set_component(model, rotation(), rot);
+
+                    let speed = 0.05;
+                    let displace = diff.normalize_or_zero() * speed;
+
+                    /*if anim_state != vec![0.0, 1.0, 0.0] {
+                        entity::set_component(anim_model, apply_animation_player(), walk_player.0);
+                        entity::set_component(
+                            anim_model,
+                            components::anim_state(),
+                            vec![0.0, 1.0, 0.0],
+                        );
+                    }*/
+                    let collision = move_character(
+                        model,
+                        vec3(displace.x, displace.y, -0.1),
+                        0.01,
+                        delta_time(),
+                    );
+
+                    if collision.side {
+                        entity::set_component(
+                            model,
+                            components::target_pos(),
+                            current_pos.xy(),
+                        );
+                        //entity::set_component(anim_model, apply_animation_player(), idle_player.0);
+                        /*entity::set_component(
+                            anim_model,
+                            components::anim_state(),
+                            vec![1.0, 0.0, 0.0],
+                        );*/
+                    }
             }
         }
     });
@@ -73,7 +154,8 @@ fn create_ranged_creep(init_pos: Vec3) -> EntityId{
 
     entity::add_component(model, children(), vec![anim_model]);
     entity::add_component(model, components::anim_model(), anim_model);
-    entity::add_component(model, components::target_pos(), Vec2{x:init_pos.x, y:init_pos.y});
+    //entity::add_component(model, components::target_pos(), Vec2{x:init_pos.x, y:init_pos.y});
+    entity::add_component(model, components::target_pos(), Vec2{x:10., y:10.});
 
     model
 }
