@@ -28,7 +28,15 @@ pub fn main() {
         asset::url("assets/anim/Zombie Idle.fbx/animations/mixamo.com.anim").unwrap(),
     );
 
-    create_ranged_creep(Vec3{x:2., y:2., z:1.}, ranged_idle);
+    let ranged_walk = PlayClipFromUrlNode::new(
+        asset::url("assets/anim/Zombie Walk.fbx/animations/mixamo.com.anim")
+            .unwrap(),
+    );
+
+    let idle_player = AnimationPlayer::new(&ranged_idle);
+    let walk_player = AnimationPlayer::new(&ranged_walk);
+
+    create_ranged_creep(Vec3{x:2., y:2., z:1.}, idle_player);
 
     query(components::is_creep()).each_frame({
         move |list| {
@@ -55,7 +63,7 @@ pub fn main() {
 
                     move_character(model, vec3(0., 0., -0.1), 0.01, delta_time());
 
-                    /*if anim_state != vec![0.0, 0.0, 1.0] {
+                    if anim_state != vec![0.0, 0.0, 1.0] {
                         entity::set_component(
                             anim_model,
                             apply_animation_player(),
@@ -67,7 +75,7 @@ pub fn main() {
                             vec![1.0, 0.0, 0.0],
                         );
                         continue;
-                    }*/
+                    }
                 }
 
 
@@ -85,14 +93,14 @@ pub fn main() {
                     let speed = 0.05;
                     let displace = diff.normalize_or_zero() * speed;
 
-                    /*if anim_state != vec![0.0, 1.0, 0.0] {
+                    if anim_state != vec![0.0, 1.0, 0.0] {
                         entity::set_component(anim_model, apply_animation_player(), walk_player.0);
                         entity::set_component(
                             anim_model,
                             components::anim_state(),
                             vec![0.0, 1.0, 0.0],
                         );
-                    }*/
+                    }
                     let collision = move_character(
                         model,
                         vec3(displace.x, displace.y, -0.1),
@@ -106,21 +114,19 @@ pub fn main() {
                             components::target_pos(),
                             current_pos.xy(),
                         );
-                        //entity::set_component(anim_model, apply_animation_player(), idle_player.0);
-                        /*entity::set_component(
+                        entity::set_component(anim_model, apply_animation_player(), idle_player.0);
+                        entity::set_component(
                             anim_model,
                             components::anim_state(),
                             vec![1.0, 0.0, 0.0],
-                        );*/
+                        );
                     }
             }
         }
     });
 }
 
-fn create_ranged_creep(init_pos: Vec3, ranged_idle:PlayClipFromUrlNode) -> EntityId{
-    let idle_player = AnimationPlayer::new(&ranged_idle);
-
+fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer) -> EntityId{
     let model = Entity::new()
         .with_merge(make_transformable())
         .with(translation(), vec3(init_pos.x, init_pos.y, init_pos.z))
