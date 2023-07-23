@@ -14,7 +14,7 @@ is_path_point = { type = "Bool", name = "is_path_point", description = "path poi
     "Debuggable",
 ] }
 
-is_first_mars_point = { type = "Bool", name = "is_first_mars_point", description = "first mars point, from where creep spawns begin", atributes = [
+is_first_mars_point = { type = "Bool", name = "is_first_mars_point", description = "first mars point, from where mars creep spawns happen", atributes = [
     "Debuggable",
 ] }
 
