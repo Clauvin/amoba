@@ -38,23 +38,7 @@ pub fn main() {
         .with(components::base_side(), 1)
         .spawn();
 
-    let path_point_mars_left_spawn = Entity::new()
-        .with(translation(), vec3(15., 18., 1.))
-        .with(components::is_path_point(), true)
-        .with(components::is_first_mars_point(), true)
-        .spawn();
-
-    let path_point_mars_middle_spawn = Entity::new()
-        .with(translation(), vec3(17., 17., 1.))
-        .with(components::is_path_point(), true)
-        .with(components::is_first_mars_point(), true)
-        .spawn();
-
-    let path_point_mars_right_spawn = Entity::new()
-        .with(translation(), vec3(18., 15., 1.))
-        .with(components::is_path_point(), true)
-        .with(components::is_first_mars_point(), true)
-        .spawn();
+    spawn_mars_spawn_points_and_paths();
 
     query((components::health(), components::base_side())).each_frame(|list| {
         for (base_id, (health, side)) in list {
@@ -135,5 +119,41 @@ pub fn main() {
         .with_default(main_scene())
         .with(light_diffuse(), Vec3::ONE)
         .with(fog_density(), 0.)
+        .spawn();
+}
+
+fn spawn_mars_spawn_points_and_paths(){
+    let path_point_mars_left_spawn = Entity::new()
+        .with(translation(), vec3(15., 18., 1.))
+        .with(components::is_path_point(), true)
+        .with(components::is_first_mars_point(), true)
+        .spawn();
+
+    let path_point_mars_left_middle_of_path = Entity::new()
+        .with(translation(), vec3(15., -10., 1.))
+        .with(components::is_path_point(), true)
+        .spawn();
+
+    entity::add_component(path_point_mars_left_spawn, components::next_path_point(), path_point_mars_left_middle_of_path);
+
+    let path_point_mars_left_end_of_path = Entity::new()
+        .with(translation(), vec3(-13., -10., 1.))
+        .with(components::is_path_point(), true)
+        .spawn();
+
+    entity::add_component(path_point_mars_left_middle_of_path, components::next_path_point(), path_point_mars_left_end_of_path);
+
+
+
+    let path_point_mars_middle_spawn = Entity::new()
+        .with(translation(), vec3(13., 13., 1.))
+        .with(components::is_path_point(), true)
+        .with(components::is_first_mars_point(), true)
+        .spawn();
+
+    let path_point_mars_right_spawn = Entity::new()
+        .with(translation(), vec3(18., 15., 1.))
+        .with(components::is_path_point(), true)
+        .with(components::is_first_mars_point(), true)
         .spawn();
 }
