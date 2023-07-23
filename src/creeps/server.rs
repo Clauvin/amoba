@@ -35,10 +35,9 @@ pub fn main() {
     let idle_player = AnimationPlayer::new(&ranged_idle);
     let walk_player = AnimationPlayer::new(&ranged_walk);
 
-    let list = query(components::is_path_point()).build().evaluate();
+    let list = query((translation(), components::is_path_point(), components::is_first_mars_point())).build().evaluate();
 
-    for (pathPointEntityId, _) in list {
-        let coordinates = entity::get_component(pathPointEntityId, translation()).unwrap();
+    for (marsSpawnPointEntityId, (coordinates, _, _)) in list {
         create_ranged_creep(coordinates , idle_player, Vec2{x:coordinates.x, y:coordinates.y});
     }
 
