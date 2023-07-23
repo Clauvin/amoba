@@ -124,13 +124,13 @@ pub fn main() {
 
 fn spawn_mars_spawn_points_and_paths(){
     let path_point_mars_left_spawn = Entity::new()
-        .with(translation(), vec3(15., 18., 1.))
+        .with(translation(), vec3(15., 13., 1.))
         .with(components::is_path_point(), true)
         .with(components::is_first_mars_point(), true)
         .spawn();
 
     let path_point_mars_left_middle_of_path = Entity::new()
-        .with(translation(), vec3(15., -10., 1.))
+        .with(translation(), vec3(-14., 13., 1.))
         .with(components::is_path_point(), true)
         .spawn();
 
@@ -145,7 +145,7 @@ fn spawn_mars_spawn_points_and_paths(){
 
 
 
-    let path_point_mars_middle_spawn = Entity::new()
+    /*let path_point_mars_middle_spawn = Entity::new()
         .with(translation(), vec3(13., 13., 1.))
         .with(components::is_path_point(), true)
         .with(components::is_first_mars_point(), true)
@@ -155,5 +155,5 @@ fn spawn_mars_spawn_points_and_paths(){
         .with(translation(), vec3(18., 15., 1.))
         .with(components::is_path_point(), true)
         .with(components::is_first_mars_point(), true)
-        .spawn();
+        .spawn();*/
 }
