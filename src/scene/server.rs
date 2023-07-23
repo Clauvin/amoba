@@ -38,9 +38,22 @@ pub fn main() {
         .with(components::base_side(), 1)
         .spawn();
 
-    let path_point_left = Entity::new()
-        .with(translation(), vec3(15., 15., 1.))
+    let path_point_left_spawn = Entity::new()
+        .with(translation(), vec3(0., 0., 1.))
         .with(components::is_path_point(), true)
+        .with(components::is_first_path_point(), true)
+        .spawn();
+
+    let path_point_middle_spawn = Entity::new()
+        .with(translation(), vec3(5., 5., 1.))
+        .with(components::is_path_point(), true)
+        .with(components::is_first_path_point(), true)
+        .spawn();
+
+    let path_point_right_spawn = Entity::new()
+        .with(translation(), vec3(10., 10., 1.))
+        .with(components::is_path_point(), true)
+        .with(components::is_first_path_point(), true)
         .spawn();
 
     query((components::health(), components::base_side())).each_frame(|list| {
