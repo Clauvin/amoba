@@ -39,19 +39,19 @@ pub fn main() {
         .spawn();
 
     let path_point_mars_left_spawn = Entity::new()
-        .with(translation(), vec3(0., 0., 1.))
+        .with(translation(), vec3(15., 18., 1.))
         .with(components::is_path_point(), true)
         .with(components::is_first_mars_point(), true)
         .spawn();
 
     let path_point_mars_middle_spawn = Entity::new()
-        .with(translation(), vec3(5., 5., 1.))
+        .with(translation(), vec3(17., 17., 1.))
         .with(components::is_path_point(), true)
         .with(components::is_first_mars_point(), true)
         .spawn();
 
     let path_point_mars_right_spawn = Entity::new()
-        .with(translation(), vec3(10., 10., 1.))
+        .with(translation(), vec3(18., 15., 1.))
         .with(components::is_path_point(), true)
         .with(components::is_first_mars_point(), true)
         .spawn();
