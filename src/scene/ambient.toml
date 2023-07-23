@@ -13,3 +13,11 @@ base_side = { type = "U8", name = "base_side", description = "which side this ba
 is_path_point = { type = "Bool", name = "is_path_point", description = "path points used by creeps to move through a lane", atributes = [
     "Debuggable",
 ] }
+
+is_first_path_point = { type = "Bool", name = "is_first_path_point", description = "first path points, from where creep spawns begin", atributes = [
+    "Debuggable",
+] }
+
+next_path_point = { type = "EntityId", name = "next_path_point", description = "next path point for creeps to go after reaching this one.", attributes = [
+    "Debuggable",
+] }
