@@ -38,7 +38,11 @@ pub fn main() {
     let list = query((translation(), components::is_path_point(), components::is_first_mars_point())).build().evaluate();
 
     for (marsSpawnPointEntityId, (coordinates, _, _)) in list {
-        create_ranged_creep(coordinates , idle_player, Vec2{x:coordinates.x, y:coordinates.y});
+        let next_path_point = entity::get_component(marsSpawnPointEntityId, components::next_path_point()).unwrap();
+        let next_coordinates = entity::get_component(next_path_point, translation()).unwrap();
+
+        println!("{} {}", next_coordinates.x, next_coordinates.y);
+        create_ranged_creep(coordinates , idle_player, Vec2{x:next_coordinates.x, y:next_coordinates.y});
     }
 
     query(components::is_creep()).each_frame({
@@ -84,46 +88,46 @@ pub fn main() {
 
                 //-----------------------
 
-                    let target_direction = diff;
-                    let initial_direction: Vec2 = Vec2::new(1.0, 0.0);
-                    let dot = initial_direction.dot(target_direction);
-                    let det = initial_direction.x * target_direction.y
-                        - initial_direction.y * target_direction.x;
-                    let angle = det.atan2(dot);
-                    let rot: Quat = Quat::from_rotation_z(angle - INIT_POS);
-                    entity::set_component(model, rotation(), rot);
+                let target_direction = diff;
+                let initial_direction: Vec2 = Vec2::new(1.0, 0.0);
+                let dot = initial_direction.dot(target_direction);
+                let det = initial_direction.x * target_direction.y
+                    - initial_direction.y * target_direction.x;
+                let angle = det.atan2(dot);
+                let rot: Quat = Quat::from_rotation_z(angle - INIT_POS);
+                entity::set_component(model, rotation(), rot);
 
-                    let speed = 0.05;
-                    let displace = diff.normalize_or_zero() * speed;
+                let speed = 0.05;
+                let displace = diff.normalize_or_zero() * speed;
 
-                    if anim_state != vec![0.0, 1.0, 0.0] {
-                        entity::set_component(anim_model, apply_animation_player(), walk_player.0);
-                        entity::set_component(
-                            anim_model,
-                            components::anim_state(),
-                            vec![0.0, 1.0, 0.0],
-                        );
-                    }
-                    let collision = move_character(
-                        model,
-                        vec3(displace.x, displace.y, -0.1),
-                        0.01,
-                        delta_time(),
+                if anim_state != vec![0.0, 1.0, 0.0] {
+                    entity::set_component(anim_model, apply_animation_player(), walk_player.0);
+                    entity::set_component(
+                        anim_model,
+                        components::anim_state(),
+                        vec![0.0, 1.0, 0.0],
                     );
+                }
+                let collision = move_character(
+                    model,
+                    vec3(displace.x, displace.y, -0.1),
+                    0.01,
+                    delta_time(),
+                );
 
-                    if collision.side {
-                        entity::set_component(
-                            model,
-                            components::target_pos(),
-                            current_pos.xy(),
-                        );
-                        entity::set_component(anim_model, apply_animation_player(), idle_player.0);
-                        entity::set_component(
-                            anim_model,
-                            components::anim_state(),
-                            vec![1.0, 0.0, 0.0],
-                        );
-                    }
+                if collision.side {
+                    entity::set_component(
+                        model,
+                        components::target_pos(),
+                        current_pos.xy(),
+                    );
+                    entity::set_component(anim_model, apply_animation_player(), idle_player.0);
+                    entity::set_component(
+                        anim_model,
+                        components::anim_state(),
+                        vec![1.0, 0.0, 0.0],
+                    );
+                }
             }
         }
     });
