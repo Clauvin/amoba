@@ -10,6 +10,11 @@ role = { type = "U32", name = "Team and hero", description = "0=>MarsHeroA, 1=>J
     "Networked",
 ] }
 
+team = { type = "U32", name = "Team", desription = "0=>Mars, 1=>Jupiter, 2=>... As role seems to be made for heroes, team is a more generic component for creeps.", attributes = [
+    "Debuggable",
+    "Networked",
+]}
+
 target_pos = { type = "Vec2", name = "target_pos", description = "target_pos", attributes = [
     "Debuggable",
     "Networked",
