@@ -39,7 +39,7 @@ pub fn main() {
 
     for (pathPointEntityId, _) in list {
         let coordinates = entity::get_component(pathPointEntityId, translation()).unwrap();
-        create_ranged_creep(Vec3{x:2., y:2., z:1.}, idle_player, Vec2{x:coordinates.x, y:coordinates.y});
+        create_ranged_creep(coordinates , idle_player, Vec2{x:coordinates.x, y:coordinates.y});
     }
 
     query(components::is_creep()).each_frame({
