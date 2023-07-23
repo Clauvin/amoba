@@ -29,14 +29,18 @@ pub fn main() {
     );
 
     let ranged_walk = PlayClipFromUrlNode::new(
-        asset::url("assets/anim/Zombie Walk.fbx/animations/mixamo.com.anim")
-            .unwrap(),
+        asset::url("assets/anim/Zombie Walk.fbx/animations/mixamo.com.anim").unwrap(),
     );
 
     let idle_player = AnimationPlayer::new(&ranged_idle);
     let walk_player = AnimationPlayer::new(&ranged_walk);
 
-    create_ranged_creep(Vec3{x:2., y:2., z:1.}, idle_player);
+    let list = query(components::is_path_point()).build().evaluate();
+
+    for (pathPointEntityId, _) in list {
+        let coordinates = entity::get_component(pathPointEntityId, translation()).unwrap();
+        create_ranged_creep(Vec3{x:2., y:2., z:1.}, idle_player, Vec2{x:coordinates.x, y:coordinates.y});
+    }
 
     query(components::is_creep()).each_frame({
         move |list| {
@@ -126,7 +130,7 @@ pub fn main() {
     });
 }
 
-fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer) -> EntityId{
+fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, target_pos:Vec2) -> EntityId{
     let model = Entity::new()
         .with_merge(make_transformable())
         .with(translation(), vec3(init_pos.x, init_pos.y, init_pos.z))
