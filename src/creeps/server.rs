@@ -79,6 +79,20 @@ pub fn main() {
                             components::anim_state(),
                             vec![1.0, 0.0, 0.0],
                         );
+
+                        let current_path_point = get_component(model, components::next_path_point()).unwrap();
+
+                        let next_path_point = match get_component(current_path_point, components::next_path_point()) {
+                            Some(next) => next,
+                            None => current_path_point
+                        };
+
+                        set_component(model, components::next_path_point(), next_path_point);
+
+                        let next_target = get_component(next_path_point, translation()).unwrap();
+
+                        entity::set_component(model, components::target_pos(), Vec2{x:next_target.x, y:next_target.y});
+
                         continue;
                     }
                 }
