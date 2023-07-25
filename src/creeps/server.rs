@@ -12,7 +12,7 @@ use ambient_api::{
     ecs::query,
     concepts::make_transformable,
     global::delta_time,
-    entity::{add_component, self}, 
+    entity::{add_component, self, get_component, set_component}, 
     physics::move_character, 
     prelude::{
         Quat, Entity, EntityId, Vec3, Vec2, Vec3Swizzles,
