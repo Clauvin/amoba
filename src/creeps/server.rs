@@ -37,8 +37,8 @@ pub fn main() {
 
     let list = query((translation(), components::is_path_point(), components::is_first_mars_point())).build().evaluate();
 
-    for (marsSpawnPointEntityId, (coordinates, _, _)) in list {
-        let next_path_point = entity::get_component(marsSpawnPointEntityId, components::next_path_point()).unwrap();
+    for (mars_spawn_point_entity_id, (coordinates, _, _)) in list {
+        let next_path_point = entity::get_component(mars_spawn_point_entity_id, components::next_path_point()).unwrap();
         let next_coordinates = entity::get_component(next_path_point, translation()).unwrap();
 
         println!("{} {}", next_coordinates.x, next_coordinates.y);
