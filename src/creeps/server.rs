@@ -39,10 +39,8 @@ pub fn main() {
 
     for (mars_spawn_point_entity_id, (coordinates, _, _)) in list {
         let next_path_point = entity::get_component(mars_spawn_point_entity_id, components::next_path_point()).unwrap();
-        let next_coordinates = entity::get_component(next_path_point, translation()).unwrap();
 
-        println!("{} {}", next_coordinates.x, next_coordinates.y);
-        create_ranged_creep(coordinates , idle_player, Vec2{x:next_coordinates.x, y:next_coordinates.y});
+        create_ranged_creep(coordinates, idle_player, next_path_point);
     }
 
     query(components::is_creep()).each_frame({
