@@ -19,8 +19,11 @@ use ambient_api::{
         vec3, 
     }, main, 
 };
+use components::team;
 
 const INIT_POS: f32 = std::f32::consts::FRAC_PI_2;
+const MARS_TEAM: u32 = 0;
+
 
 #[main]
 pub fn main() {
@@ -41,6 +44,7 @@ pub fn main() {
         let next_path_point = entity::get_component(mars_spawn_point_entity_id, components::next_path_point()).unwrap();
 
         let model_test = create_ranged_creep(coordinates, idle_player, next_path_point);
+        entity::add_component(model_test, team(), MARS_TEAM);
 
     }
 
