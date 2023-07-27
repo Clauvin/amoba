@@ -40,13 +40,14 @@ pub fn main() {
     for (mars_spawn_point_entity_id, (coordinates, _, _)) in list {
         let next_path_point = entity::get_component(mars_spawn_point_entity_id, components::next_path_point()).unwrap();
 
-        create_ranged_creep(coordinates, idle_player, next_path_point);
+        let model_test = create_ranged_creep(coordinates, idle_player, next_path_point);
+        let target_pos = entity::get_component(model_test, components::target_pos()).unwrap();
+        println!("{} {}", target_pos.x, target_pos.y);
     }
 
     query(components::is_creep()).each_frame({
         move |list| {
             for model in list {
-                //println!("{:?}",model);
 
                 let model = model.0;
                 
@@ -59,8 +60,10 @@ pub fn main() {
                 }
 
                 let current_pos = entity::get_component(model, translation()).unwrap();
+                //println!("{} {}", current_pos.x, current_pos.y);
 
                 let target_pos = entity::get_component(model, components::target_pos()).unwrap();
+                println!("{} {}", target_pos.x, target_pos.y);
 
                 let diff = target_pos - current_pos.xy();
 
