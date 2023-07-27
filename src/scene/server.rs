@@ -123,6 +123,14 @@ pub fn main() {
 }
 
 fn spawn_mars_spawn_points_and_paths(){
+    spawn_mars_left_spawn_path();
+
+    spawn_mars_middle_spawn_path();
+
+    spawn_mars_right_spawn_path();
+}
+
+fn spawn_mars_left_spawn_path(){
     let path_point_mars_left_spawn = Entity::new()
         .with(translation(), vec3(15., 13., 1.))
         .with(components::is_path_point(), true)
@@ -142,18 +150,43 @@ fn spawn_mars_spawn_points_and_paths(){
         .spawn();
 
     entity::add_component(path_point_mars_left_middle_of_path, components::next_path_point(), path_point_mars_left_end_of_path);
+}
 
-
-
-    /*let path_point_mars_middle_spawn = Entity::new()
-        .with(translation(), vec3(13., 13., 1.))
+fn spawn_mars_middle_spawn_path(){
+    let path_point_mars_middle_spawn = Entity::new()
+        .with(translation(), vec3(13.,13.,1.))
         .with(components::is_path_point(), true)
         .with(components::is_first_mars_point(), true)
         .spawn();
 
+    let path_point_mars_middle_end_of_path = Entity::new()
+        .with(translation(), vec3(-13., -13., 1.))
+        .with(components::is_path_point(), true)
+        .spawn();
+
+    entity::add_component(path_point_mars_middle_spawn, components::next_path_point(), path_point_mars_middle_end_of_path);
+}
+
+fn spawn_mars_right_spawn_path(){
     let path_point_mars_right_spawn = Entity::new()
-        .with(translation(), vec3(18., 15., 1.))
+        .with(translation(), vec3(13., 15., 1.))
         .with(components::is_path_point(), true)
         .with(components::is_first_mars_point(), true)
-        .spawn();*/
+        .spawn();
+
+    let path_point_mars_right_middle_of_path = Entity::new()
+        .with(translation(), vec3(13., -14., 1.))
+        .with(components::is_path_point(), true)
+        .spawn();
+
+    entity::add_component(path_point_mars_right_spawn, components::next_path_point(), path_point_mars_right_middle_of_path);
+
+    let path_point_mars_right_end_of_path = Entity::new()
+        .with(translation(), vec3(-14., -13., 1.))
+        .with(components::is_path_point(), true)
+        .spawn();
+
+    entity::add_component(path_point_mars_right_middle_of_path, components::next_path_point(), path_point_mars_right_end_of_path);
+
+
 }
