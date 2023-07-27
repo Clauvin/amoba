@@ -13,3 +13,8 @@ target_pos = { type = "Vec2", name = "target_pos", description = "target_pos", a
 is_creep = { type = "EntityId", name = "is_creep", description = "a creep, a NPC that is on the side of one of the teams", attributes = [
     "Debuggable",
 ] }
+
+team = { type = "U32", name = "Team", desription = "0=>Mars, 1=>Jupiter, 2=>... As role seems to be made for heroes, team is a more generic component for creeps.", attributes = [
+    "Debuggable",
+    "Networked",
+]}
