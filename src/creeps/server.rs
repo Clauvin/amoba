@@ -61,14 +61,10 @@ pub fn main() {
                 }
 
                 let current_pos = entity::get_component(model, translation()).unwrap();
-                if count == 2{ println!("Current position {}: {} {}", count, current_pos.x, current_pos.y); }
 
                 let target_pos = entity::get_component(model, components::target_pos()).unwrap();
-                if count == 2{ println!("Current target {}: {} {}", count, target_pos.x, target_pos.y); }
 
                 let diff = target_pos - current_pos.xy();
-
-                if count == 2{ println!("Current diff {}, {}", count, diff); }
 
                 if diff.length() < 1.0 {
 
@@ -93,7 +89,6 @@ pub fn main() {
                             None => current_path_point
                         };
 
-                        if count == 2{ println!("Mudou de alvo."); }
                         set_component(model, components::next_path_point(), next_path_point);
 
                         let next_target = get_component(next_path_point, translation()).unwrap();
