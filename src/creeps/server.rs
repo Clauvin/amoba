@@ -135,11 +135,12 @@ pub fn main() {
                 );
 
                 if collision.side {
-                    entity::set_component(
+                    //commented out the target_pos change as it's breaking the path finding.
+                    /*entity::set_component(
                         model,
                         components::target_pos(),
                         current_pos.xy(),
-                    );
+                    );*/
                     entity::set_component(anim_model, apply_animation_player(), idle_player.0);
                     entity::set_component(
                         anim_model,
