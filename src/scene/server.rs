@@ -145,7 +145,7 @@ fn spawn_mars_left_spawn_path(){
     entity::add_component(path_point_mars_left_spawn, components::next_path_point(), path_point_mars_left_middle_of_path);
 
     let path_point_mars_left_end_of_path = Entity::new()
-        .with(translation(), vec3(-13., -10., 1.))
+        .with(translation(), vec3(-14., -11., 1.))
         .with(components::is_path_point(), true)
         .spawn();
 
@@ -182,7 +182,7 @@ fn spawn_mars_right_spawn_path(){
     entity::add_component(path_point_mars_right_spawn, components::next_path_point(), path_point_mars_right_middle_of_path);
 
     let path_point_mars_right_end_of_path = Entity::new()
-        .with(translation(), vec3(-14., -13., 1.))
+        .with(translation(), vec3(-11., -14., 1.))
         .with(components::is_path_point(), true)
         .spawn();
 
