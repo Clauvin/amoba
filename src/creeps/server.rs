@@ -50,9 +50,7 @@ pub fn main() {
 
     query(components::is_creep()).each_frame({
         move |list| {
-            let mut count = 0;
             for model in list {
-                count += 1;
                 let model = model.0;
                 
                 let anim_model = entity::get_component(model, components::anim_model()).unwrap();
