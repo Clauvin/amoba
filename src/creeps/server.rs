@@ -44,12 +44,12 @@ pub fn main() {
     query((translation(), components::is_path_point(), components::is_first_mars_point())).each_frame({
         move |list| {
             let time_to_next_creep_spawn = entity::get_component(resources(), components::spawn_timer()).unwrap();
+
             if time_to_next_creep_spawn <= 0. {
                 for (mars_spawn_point_entity_id, (coordinates, _, _)) in list {
                     let next_path_point = entity::get_component(mars_spawn_point_entity_id, components::next_path_point()).unwrap();
                 
-                    let model_test = create_ranged_creep(coordinates, idle_player, next_path_point);
-                    entity::add_component(model_test, team(), MARS_TEAM);
+                    create_ranged_creep(coordinates, idle_player, next_path_point, MARS_TEAM);
                 }
                 entity::set_component(resources(), components::spawn_timer(), TIME_TO_NEXT_CREEP_SPAWNS);
             }
