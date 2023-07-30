@@ -3,7 +3,7 @@ use ambient_api::{
     asset, 
     components::core::{
         transform::{translation, local_to_world, rotation, local_to_parent},
-        physics::{character_controller_height, character_controller_radius, dynamic, physics_controlled, cube_collider},
+        physics::{character_controller_height, character_controller_radius, dynamic, physics_controlled},
         app::name,
         ecs::{parent, children},
         prefab::prefab_from_url,
@@ -11,11 +11,11 @@ use ambient_api::{
     },
     ecs::query,
     concepts::make_transformable,
-    entity::{add_component, self, get_component, set_component, resources}, 
+    entity::{self, get_component, set_component, resources}, 
     physics::move_character, 
     prelude::{
         Quat, Entity, EntityId, Vec3, Vec2, Vec3Swizzles,
-        vec3, run_async, sleep, delta_time, 
+        vec3, delta_time, 
     }, main, 
 };
 use components::team;
