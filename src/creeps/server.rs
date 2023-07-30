@@ -59,9 +59,6 @@ pub fn main() {
         }
     });
 
-
-    
-
     query(components::is_creep()).each_frame({
         move |list| {
             for model in list {
