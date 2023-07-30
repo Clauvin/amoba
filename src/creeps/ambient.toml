@@ -10,6 +10,10 @@ target_pos = { type = "Vec2", name = "target_pos", description = "target_pos", a
     "Networked",
 ] }
 
+spawn_timer = { type = "F32", name = "spawn_timer", description = "How many seconds are left before creeps are spawned", attributes = [
+    "Debuggable",
+]}
+
 is_creep = { type = "EntityId", name = "is_creep", description = "a creep, a NPC that is on the side of one of the teams", attributes = [
     "Debuggable",
 ] }
