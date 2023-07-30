@@ -55,7 +55,6 @@ pub fn main() {
             }
             else {
                 entity::set_component(resources(), components::spawn_timer(), time_to_next_creep_spawn - delta_time());
-                println!("{:?}", delta_time());
             }
         }
     });
