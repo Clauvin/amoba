@@ -11,19 +11,19 @@ use ambient_api::{
     },
     ecs::query,
     concepts::make_transformable,
-    global::delta_time,
-    entity::{add_component, self, get_component, set_component}, 
+    entity::{add_component, self, get_component, set_component, resources}, 
     physics::move_character, 
     prelude::{
         Quat, Entity, EntityId, Vec3, Vec2, Vec3Swizzles,
-        vec3, run_async, sleep, 
+        vec3, run_async, sleep, delta_time, 
     }, main, 
 };
 use components::team;
 
 const INIT_POS: f32 = std::f32::consts::FRAC_PI_2;
 const MARS_TEAM: u32 = 0;
-const TIME_TO_NEXT_CREEP_SPAWNS_IN_MILISSECONDS: f32 = 5000.;
+const TIME_TO_NEXT_CREEP_SPAWNS: f32 = 5.;
+
 
 
 #[main]
@@ -39,23 +39,29 @@ pub fn main() {
     let idle_player = AnimationPlayer::new(&ranged_idle);
     let walk_player = AnimationPlayer::new(&ranged_walk);
 
-    run_async(
-        async move {
-            query((translation(), components::is_path_point(), components::is_first_mars_point())).each_frame({
-                move |list| {
-                    for (mars_spawn_point_entity_id, (coordinates, _, _)) in list {
-                        let next_path_point = entity::get_component(mars_spawn_point_entity_id, components::next_path_point()).unwrap();
-                    
-                        let model_test = create_ranged_creep(coordinates, idle_player, next_path_point);
-                        entity::add_component(model_test, team(), MARS_TEAM);
-                    
-                    }
+    entity::add_component(resources(), components::spawn_timer(), TIME_TO_NEXT_CREEP_SPAWNS);
+    
+    query((translation(), components::is_path_point(), components::is_first_mars_point())).each_frame({
+        move |list| {
+            let time_to_next_creep_spawn = entity::get_component(resources(), components::spawn_timer()).unwrap();
+            if time_to_next_creep_spawn <= 0. {
+                for (mars_spawn_point_entity_id, (coordinates, _, _)) in list {
+                    let next_path_point = entity::get_component(mars_spawn_point_entity_id, components::next_path_point()).unwrap();
+                
+                    let model_test = create_ranged_creep(coordinates, idle_player, next_path_point);
+                    entity::add_component(model_test, team(), MARS_TEAM);
                 }
-            });
-
-            sleep(TIME_TO_NEXT_CREEP_SPAWNS_IN_MILISSECONDS).await;
+                entity::set_component(resources(), components::spawn_timer(), TIME_TO_NEXT_CREEP_SPAWNS);
+            }
+            else {
+                entity::set_component(resources(), components::spawn_timer(), time_to_next_creep_spawn - delta_time());
+                println!("{:?}", delta_time());
+            }
         }
-    );    
+    });
+
+
+    
 
     query(components::is_creep()).each_frame({
         move |list| {
