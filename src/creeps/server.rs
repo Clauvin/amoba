@@ -193,7 +193,6 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
 
     entity::add_component(model, children(), vec![anim_model]);
     entity::add_component(model, components::anim_model(), anim_model);
-    //entity::add_component(model, components::target_pos(), Vec2{x:init_pos.x, y:init_pos.y});
     entity::add_component(model, components::next_path_point(), next_path_point);
     
     let target = get_component(next_path_point, translation()).unwrap();
