@@ -41,27 +41,13 @@ pub fn main() {
 
     entity::add_component(resources(), components::spawn_timer(), TIME_TO_NEXT_CREEP_SPAWNS);
     
-    query((translation(), components::is_path_point(), components::is_first_mars_point())).each_frame({
-        move |list| {
-            let time_to_next_creep_spawn = entity::get_component(resources(), components::spawn_timer()).unwrap();
-
-            if time_to_next_creep_spawn <= 0. {
-                for (mars_spawn_point_entity_id, (coordinates, _, _)) in list {
-                    let next_path_point = entity::get_component(mars_spawn_point_entity_id, components::next_path_point()).unwrap();
-                
-                    create_ranged_creep(coordinates, idle_player, next_path_point, MARS_TEAM);
-                }
-                entity::set_component(resources(), components::spawn_timer(), TIME_TO_NEXT_CREEP_SPAWNS);
-            }
-            else {
-                entity::set_component(resources(), components::spawn_timer(), time_to_next_creep_spawn - delta_time());
-            }
-        }
-    });
-
+    spawns_creeps_regularly(idle_player);
+    
+    //Creeper movement and animation
     query(components::is_creep()).each_frame({
         move |list| {
             for model in list {
+
                 let model = model.0;
                 
                 let anim_model = entity::get_component(model, components::anim_model()).unwrap();
@@ -155,6 +141,27 @@ pub fn main() {
                         vec![1.0, 0.0, 0.0],
                     );
                 }
+            }
+        }
+    });
+}
+
+fn spawns_creeps_regularly(idle_player:AnimationPlayer) {
+    //Spawns mars creeps regularly from the mars paths starting points
+    query((translation(), components::is_path_point(), components::is_first_mars_point())).each_frame({
+        move |list| {
+            let time_to_next_creep_spawn = entity::get_component(resources(), components::spawn_timer()).unwrap();
+
+            if time_to_next_creep_spawn <= 0. {
+                for (mars_spawn_point_entity_id, (coordinates, _, _)) in list {
+                    let next_path_point = entity::get_component(mars_spawn_point_entity_id, components::next_path_point()).unwrap();
+                
+                    create_ranged_creep(coordinates, idle_player, next_path_point, MARS_TEAM);
+                }
+                entity::set_component(resources(), components::spawn_timer(), TIME_TO_NEXT_CREEP_SPAWNS);
+            }
+            else {
+                entity::set_component(resources(), components::spawn_timer(), time_to_next_creep_spawn - delta_time());
             }
         }
     });
