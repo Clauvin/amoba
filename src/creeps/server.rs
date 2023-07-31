@@ -24,8 +24,6 @@ const INIT_POS: f32 = std::f32::consts::FRAC_PI_2;
 const MARS_TEAM: u32 = 0;
 const TIME_TO_NEXT_CREEP_SPAWNS: f32 = 5.;
 
-
-
 #[main]
 pub fn main() {
     let ranged_idle = PlayClipFromUrlNode::new(
