@@ -22,8 +22,15 @@ use components::team;
 use components::creep_current_state;
 
 const INIT_POS: f32 = std::f32::consts::FRAC_PI_2;
+
 const MARS_TEAM: u32 = 0;
+
 const TIME_TO_NEXT_CREEP_SPAWNS: f32 = 5.;
+
+const CREEP_IDLE_STATE: u16 = 0;
+const CREEP_MOVE_STATE: u16 = 1;
+const CREEP_PURSUIT_STATE: u16 = 2;
+const CREEP_ATTACK_STATE: u16 = 3;
 
 #[main]
 pub fn main() {
