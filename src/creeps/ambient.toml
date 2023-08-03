@@ -19,6 +19,8 @@ team = { type = "U32", name = "Team", description = "0=>Mars, 1=>Jupiter, 2=>...
     "Networked",
 ]}
 
-creep_current_state = { type = "U16", name = "creep_current_state" }
+creep_current_state = { type = "U16", name = "creep_current_state", description = "Stores the creep current state. Check what each number is equal to each state on server.rs constants.", attributes = [
+    "Debuggable",
+]}
 
 
