@@ -19,6 +19,7 @@ use ambient_api::{
     }, main, 
 };
 use components::team;
+use components::creep_current_state;
 
 const INIT_POS: f32 = std::f32::consts::FRAC_PI_2;
 const MARS_TEAM: u32 = 0;
@@ -176,6 +177,7 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
         .with_default(local_to_world())
         .with(rotation(), Quat::from_rotation_z(-INIT_POS))
         .with(name(), "Ranged Creep".to_string())
+        .with(creep_current_state(), 0)
         .spawn();
 
     let anim_model = Entity::new()
