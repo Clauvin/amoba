@@ -23,4 +23,8 @@ creep_current_state = { type = "U16", name = "creep_current_state", description 
     "Debuggable",
 ]}
 
+creep_next_state = { type = "U16", name = "creep_next_state", description = "Stores the creep next state.", attributes = [
+    "Debuggable",
+]}
+
 
