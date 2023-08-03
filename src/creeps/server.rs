@@ -46,6 +46,8 @@ pub fn main() {
 
     entity::add_component(resources(), components::spawn_timer(), TIME_TO_NEXT_CREEP_SPAWNS);
     
+    checks_if_creeps_should_change_their_states_system();
+
     spawns_creeps_regularly_system(idle_player);
     
     //Creeper movement and animation
@@ -149,6 +151,15 @@ pub fn main() {
             }
         }
     });
+}
+
+fn checks_if_creeps_should_change_their_states_system() {
+
+    // query of all creeps that have current and next state
+    // If current_state != next state, changes current state to have the next state value
+    // Removes components from current_state
+    // Adds components of next_state
+
 }
 
 fn spawns_creeps_regularly_system(idle_player:AnimationPlayer) {
