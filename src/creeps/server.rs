@@ -184,7 +184,7 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
         .with_default(local_to_world())
         .with(rotation(), Quat::from_rotation_z(-INIT_POS))
         .with(name(), "Ranged Creep".to_string())
-        .with(creep_current_state(), 0)
+        .with(creep_current_state(), CREEP_IDLE_STATE)
         .spawn();
 
     let anim_model = Entity::new()
