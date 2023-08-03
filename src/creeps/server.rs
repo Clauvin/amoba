@@ -39,7 +39,7 @@ pub fn main() {
 
     entity::add_component(resources(), components::spawn_timer(), TIME_TO_NEXT_CREEP_SPAWNS);
     
-    spawns_creeps_regularly(idle_player);
+    spawns_creeps_regularly_system(idle_player);
     
     //Creeper movement and animation
     query(components::is_creep()).each_frame({
@@ -144,7 +144,7 @@ pub fn main() {
     });
 }
 
-fn spawns_creeps_regularly(idle_player:AnimationPlayer) {
+fn spawns_creeps_regularly_system(idle_player:AnimationPlayer) {
     //Spawns mars creeps regularly from the mars paths starting points
     query((translation(), components::is_path_point(), components::is_first_mars_point())).each_frame({
         move |list| {
