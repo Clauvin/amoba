@@ -199,6 +199,24 @@ fn checks_if_creeps_should_change_their_states_system() {
 
 }
 
+fn creep_idle_state_system(){
+
+}
+
+fn creep_pursuit_state_system(){
+
+}
+
+fn creep_move_state_system(){
+
+}
+
+fn creep_attack_state_system(){
+
+}
+
+
+
 fn spawns_creeps_regularly_system(idle_player:AnimationPlayer) {
     //Spawns mars creeps regularly from the mars paths starting points
     query((translation(), components::is_path_point(), components::is_first_mars_point())).each_frame({
