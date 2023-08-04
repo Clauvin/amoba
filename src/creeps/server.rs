@@ -18,7 +18,7 @@ use ambient_api::{
         vec3, delta_time, 
     }, main, 
 };
-use components::{team, creep_current_state, creep_next_state};
+use components::{team, is_creep, creep_current_state, creep_next_state};
 
 const INIT_POS: f32 = std::f32::consts::FRAC_PI_2;
 
