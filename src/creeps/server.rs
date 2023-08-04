@@ -211,7 +211,7 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
         .with(translation(), vec3(0.0, 0.0, 0.))
         .spawn();
 
-    entity::add_component(model, components::is_creep(), model);    
+    entity::add_component(model, components::is_creep(), ());    
 
     entity::add_component(anim_model, apply_animation_player(), idle_player.0);
     entity::add_component(anim_model, components::anim_state(), vec![1.0, 0.0]);

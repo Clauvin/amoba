@@ -10,7 +10,7 @@ spawn_timer = { type = "F32", name = "spawn_timer", description = "How many seco
     "Resource",
 ]}
 
-is_creep = { type = "EntityId", name = "is_creep", description = "a creep, a NPC that is on the side of one of the teams", attributes = [
+is_creep = { type = "Empty", name = "is_creep", description = "a creep, a NPC that is on the side of one of the teams", attributes = [
     "Debuggable",
 ] }
 
