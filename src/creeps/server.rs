@@ -155,10 +155,21 @@ pub fn main() {
 
 fn checks_if_creeps_should_change_their_states_system() {
 
-    // query of all creeps that have current and next state
-    // If current_state != next state, changes current state to have the next state value
-    // Removes components from current_state
-    // Adds components of next_state
+    query((is_creep(), creep_current_state(), creep_next_state())).each_frame({
+        move |list| {
+            for (creep, (_, current_state, next_state)) in list {
+                if current_state != next_state {
+                    entity::set_component(creep, creep_current_state(), next_state);
+                    // Removes components from current_state
+                    // Adds components of next_state
+                }
+            }
+
+
+        }
+    });
+
+
 
 }
 
@@ -195,7 +206,7 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
         .with(rotation(), Quat::from_rotation_z(-INIT_POS))
         .with(name(), "Ranged Creep".to_string())
         .with(creep_current_state(), CREEP_IDLE_STATE)
-        .with(creep_next_state(), CREEP_IDLE_STATE)
+        .with(creep_next_state(), CREEP_MOVE_STATE)
         .spawn();
 
     let anim_model = Entity::new()
