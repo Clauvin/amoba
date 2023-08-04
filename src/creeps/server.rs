@@ -159,9 +159,35 @@ fn checks_if_creeps_should_change_their_states_system() {
         move |list| {
             for (creep, (_, current_state, next_state)) in list {
                 if current_state != next_state {
+                    
+                    //Refactor this code to use a match instead
+                    if current_state == CREEP_IDLE_STATE {
+
+                    }
+                    else if current_state == CREEP_MOVE_STATE {
+
+                    }
+                    else if current_state == CREEP_PURSUIT_STATE {
+
+                    }
+                    else if current_state == CREEP_ATTACK_STATE {
+
+                    }
+
+                    if next_state == CREEP_IDLE_STATE {
+
+                    }
+                    else if next_state == CREEP_MOVE_STATE {
+
+                    }
+                    else if next_state == CREEP_PURSUIT_STATE {
+
+                    }
+                    else if next_state == CREEP_ATTACK_STATE {
+
+                    }
+
                     entity::set_component(creep, creep_current_state(), next_state);
-                    // Removes components from current_state
-                    // Adds components of next_state
                 }
             }
 
