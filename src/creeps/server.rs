@@ -11,7 +11,7 @@ use ambient_api::{
     },
     ecs::query,
     concepts::make_transformable,
-    entity::{self, get_component, set_component, resources}, 
+    entity::{self, get_component, set_component, resources, add_component}, 
     physics::move_character, 
     prelude::{
         Quat, Entity, EntityId, Vec3, Vec2, Vec3Swizzles,
@@ -52,18 +52,93 @@ pub fn main() {
     
     creep_pursuit_state_system();
     
-    creep_move_state_system();
+    creep_move_state_system(idle_player, walk_player);
     
     creep_attack_state_system();
 
     spawns_creeps_regularly_system(idle_player);
     
     //Creeper movement and animation
+    
+}
+
+fn checks_if_creeps_should_change_their_states_system() {
+
+    query((is_creep(), creep_current_state(), creep_next_state())).each_frame({
+        move |list| {
+            for (creep, (_, current_state, next_state)) in list {
+                if current_state != next_state {
+                    
+                    //Refactor this code to use a match instead
+                    //Leaving current_state
+                    if current_state == CREEP_IDLE_STATE {
+
+                    }
+                    else if current_state == CREEP_MOVE_STATE {
+                        entity::remove_component(creep, components::target_pos());
+                    }
+                    else if current_state == CREEP_PURSUIT_STATE {
+
+                    }
+                    else if current_state == CREEP_ATTACK_STATE {
+
+                    }
+
+                    //Entering next_state
+                    if next_state == CREEP_IDLE_STATE {
+
+                    }
+                    else if next_state == CREEP_MOVE_STATE {
+                        let next_path_point = entity::get_component(creep, components::next_path_point()).unwrap();
+    
+                        let target = get_component(next_path_point, translation()).unwrap();
+
+                        entity::add_component(creep, components::target_pos(), Vec2{x:target.x, y:target.y});
+                    }
+                    else if next_state == CREEP_PURSUIT_STATE {
+
+                    }
+                    else if next_state == CREEP_ATTACK_STATE {
+
+                    }
+
+                    entity::set_component(creep, creep_current_state(), next_state);
+                    println!("Changed state from {:?} to {:?}", current_state, next_state);
+                }
+            }
+
+
+        }
+    });
+
+
+
+}
+
+fn creep_idle_state_system(){
     query(components::is_creep()).each_frame({
         move |list| {
-            for model in list {
+            for (model, _) in list {
+                let current_state = entity::get_component(model, creep_current_state()).unwrap();
+                let next_state = entity::get_component(model, creep_next_state()).unwrap();
 
-                let model = model.0;
+                if current_state == next_state && current_state == CREEP_IDLE_STATE {
+                    entity::set_component(model, creep_next_state(), CREEP_MOVE_STATE);
+                }
+
+            }
+        }
+    });
+}
+
+fn creep_pursuit_state_system(){
+
+}
+
+fn creep_move_state_system(idle_player: AnimationPlayer, walk_player: AnimationPlayer){
+    query((components::is_creep(), components::target_pos())).each_frame({
+        move |list| {
+            for (model, (_, _)) in list {
                 
                 let anim_model = entity::get_component(model, components::anim_model()).unwrap();
 
@@ -161,64 +236,6 @@ pub fn main() {
     });
 }
 
-fn checks_if_creeps_should_change_their_states_system() {
-
-    query((is_creep(), creep_current_state(), creep_next_state())).each_frame({
-        move |list| {
-            for (creep, (_, current_state, next_state)) in list {
-                if current_state != next_state {
-                    
-                    //Refactor this code to use a match instead
-                    if current_state == CREEP_IDLE_STATE {
-
-                    }
-                    else if current_state == CREEP_MOVE_STATE {
-
-                    }
-                    else if current_state == CREEP_PURSUIT_STATE {
-
-                    }
-                    else if current_state == CREEP_ATTACK_STATE {
-
-                    }
-
-                    if next_state == CREEP_IDLE_STATE {
-
-                    }
-                    else if next_state == CREEP_MOVE_STATE {
-
-                    }
-                    else if next_state == CREEP_PURSUIT_STATE {
-
-                    }
-                    else if next_state == CREEP_ATTACK_STATE {
-
-                    }
-
-                    entity::set_component(creep, creep_current_state(), next_state);
-                }
-            }
-
-
-        }
-    });
-
-
-
-}
-
-fn creep_idle_state_system(){
-
-}
-
-fn creep_pursuit_state_system(){
-
-}
-
-fn creep_move_state_system(){
-
-}
-
 fn creep_attack_state_system(){
 
 }
@@ -282,10 +299,6 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
     entity::add_component(model, children(), vec![anim_model]);
     entity::add_component(model, components::anim_model(), anim_model);
     entity::add_component(model, components::next_path_point(), next_path_point);
-    
-    let target = get_component(next_path_point, translation()).unwrap();
-
-    entity::add_component(model, components::target_pos(), Vec2{x:target.x, y:target.y});
 
     entity::add_component(model, team(), which_team);
 
