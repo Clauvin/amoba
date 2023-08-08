@@ -23,6 +23,7 @@ use components::{team, is_creep, creep_current_state, creep_next_state};
 const INIT_POS: f32 = std::f32::consts::FRAC_PI_2;
 
 const MARS_TEAM: u32 = 0;
+const JUPYTER_TEAM: u32 = 1;
 
 const TIME_TO_NEXT_CREEP_SPAWNS: f32 = 5.;
 
