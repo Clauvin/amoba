@@ -117,11 +117,47 @@ fn checks_if_creeps_should_change_their_states_system() {
 }
 
 fn creep_idle_state_system(){
+    let all_heroes_query = query((components::hero_model(), components::role())).build();
+
+
     query(components::is_creep()).each_frame({
         move |list| {
+            
             for (model, _) in list {
+                //TECHNOLOGICAL DEBT: There's for sure a better alternative to solve this than evaluation this for every creep.
+                let all_heroes = all_heroes_query.evaluate();
+                
+                let mut closest_hero: Option<EntityId> = None;
+
+                let creep_team = entity::get_component(model, team()).unwrap();
+
+                for (hero_id, (_, role)) in all_heroes {
+                    if creep_team%2 == role%2 {
+                        match closest_hero {
+                            None => {closest_hero = Some(hero_id);}
+                            Some(hero) => {
+                                //Calculate distance between closest_hero and hero
+                                //If distance of hero is less than closest_hero, then hero becomes closest_hero.
+                            }
+                        }
+                    }
+
+
+                }
+
+                //Do we have a hero close enough of the creep?
+                //If yes, pursue hero.
+                //else Do we have an enemy creep close enough of the creep?
+                //If yes, pursue creep.
+                //else Do we have an enemy base close enough of the creep?
+                //If yes, pursue base.
+                
                 let current_state = entity::get_component(model, creep_current_state()).unwrap();
                 let next_state = entity::get_component(model, creep_next_state()).unwrap();
+
+
+
+
 
                 if current_state == next_state && current_state == CREEP_IDLE_STATE {
                     entity::set_component(model, creep_next_state(), CREEP_MOVE_STATE);
