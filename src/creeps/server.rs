@@ -124,7 +124,7 @@ fn creep_idle_state_system(){
         move |list| {
             
             for (model, _) in list {
-                //TECHNOLOGICAL DEBT: There's for sure a better alternative to solve this than evaluation this for every creep.
+                //TECHNOLOGICAL DEBT: There's for sure a better alternative to solve this than evaluation of this for every creep, and the rest of the other calculations too
                 let all_heroes = all_heroes_query.evaluate();
                 
                 let mut closest_hero: Option<EntityId> = None;
