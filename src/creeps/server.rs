@@ -132,17 +132,27 @@ fn creep_idle_state_system(){
                 let creep_team = entity::get_component(model, team()).unwrap();
 
                 for (hero_id, (_, role)) in all_heroes {
-                    if creep_team%2 == role%2 {
+                    if creep_team%2 != role%2 {
                         match closest_hero {
                             None => {closest_hero = Some(hero_id);}
                             Some(hero) => {
-                                //Calculate distance between closest_hero and hero
-                                //If distance of hero is less than closest_hero, then hero becomes closest_hero.
+                                let closest_hero_pos = entity::get_component(closest_hero.unwrap(), translation()).unwrap();
+
+                                let hero_pos = entity::get_component(hero, translation()).unwrap();
+
+                                let creep_pos = entity::get_component(model, translation()).unwrap();
+
+                                let closest_hero_dist = (creep_pos.xy() - closest_hero_pos.xy()).length();
+
+                                let hero_dist = (creep_pos.xy() - hero_pos.xy()).length();
+
+                                if hero_dist < closest_hero_dist {
+                                    closest_hero = Some(hero_id);
+                                }
+
                             }
                         }
                     }
-
-
                 }
 
                 //Do we have a hero close enough of the creep?
