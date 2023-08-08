@@ -104,7 +104,7 @@ fn checks_if_creeps_should_change_their_states_system() {
                     }
 
                     entity::set_component(creep, creep_current_state(), next_state);
-                    println!("Changed state from {:?} to {:?}", current_state, next_state);
+                    //println!("Changed state from {:?} to {:?}", current_state, next_state);
                 }
             }
 
