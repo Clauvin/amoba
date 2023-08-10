@@ -141,7 +141,17 @@ fn creep_idle_state_system(){
                 for (hero_id, (_, hero_role)) in all_heroes {
                     if creep_team%2 != hero_role%2 {
                         match closest_hero {
-                            None => {closest_hero = Some(hero_id);}
+                            None => {
+                                let current_hero_pos = entity::get_component(hero_id, translation()).unwrap();
+
+                                let creep_pos = entity::get_component(creep_model, translation()).unwrap();
+
+                                let hero_dist = (creep_pos.xy() - current_hero_pos.xy()).length();
+
+                                if hero_dist <= CREEP_MAXIMUM_PURSUIT_CHECK_DISTANCE {
+                                    closest_hero = Some(hero_id);
+                                }
+                            }
                             Some(hero) => {
                                 let closest_hero_pos = entity::get_component(closest_hero.unwrap(), translation()).unwrap();
 
