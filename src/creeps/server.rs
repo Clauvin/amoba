@@ -127,13 +127,13 @@ fn creep_idle_state_system(){
     query(components::is_creep()).each_frame({
         move |list| {
 
-            for (model, _) in list {
+            for (creep_model, _) in list {
                 //TECHNOLOGICAL DEBT: There's for sure a better alternative to solve this than evaluation of this for every creep, and the rest of the other calculations too
                 let all_heroes = all_heroes_query.evaluate();
                 
                 let mut closest_hero: Option<EntityId> = None;
 
-                let creep_team = entity::get_component(model, team()).unwrap();
+                let creep_team = entity::get_component(creep_model, team()).unwrap();
 
                 for (hero_id, (_, hero_role)) in all_heroes {
                     if creep_team%2 != hero_role%2 {
@@ -144,7 +144,7 @@ fn creep_idle_state_system(){
 
                                 let current_hero_pos = entity::get_component(hero, translation()).unwrap();
 
-                                let creep_pos = entity::get_component(model, translation()).unwrap();
+                                let creep_pos = entity::get_component(creep_model, translation()).unwrap();
 
                                 let closest_hero_dist = (creep_pos.xy() - closest_hero_pos.xy()).length();
 
@@ -176,7 +176,7 @@ fn creep_idle_state_system(){
 
 
                 if current_state == next_state && current_state == CREEP_IDLE_STATE {
-                    entity::set_component(model, creep_next_state(), CREEP_MOVE_STATE);
+                    entity::set_component(creep_model, creep_next_state(), CREEP_MOVE_STATE);
                 }
 
             }
