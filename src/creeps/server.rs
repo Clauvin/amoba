@@ -168,8 +168,8 @@ fn creep_idle_state_system(){
                 //else Do we have an enemy base close enough of the creep?
                 //If yes, pursue base.
                 
-                let current_state = entity::get_component(model, creep_current_state()).unwrap();
-                let next_state = entity::get_component(model, creep_next_state()).unwrap();
+                let current_state = entity::get_component(creep_model, creep_current_state()).unwrap();
+                let next_state = entity::get_component(creep_model, creep_next_state()).unwrap();
 
 
 
