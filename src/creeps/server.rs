@@ -83,7 +83,7 @@ fn checks_if_creeps_should_change_their_states_system() {
                         entity::remove_component(creep, components::target_pos());
                     }
                     else if current_state == CREEP_PURSUIT_STATE {
-                        
+                        entity::remove_component(creep, pursuit_target());
                     }
                     else if current_state == CREEP_ATTACK_STATE {
 
