@@ -32,6 +32,10 @@ const CREEP_MOVE_STATE: u16 = 1;
 const CREEP_PURSUIT_STATE: u16 = 2;
 const CREEP_ATTACK_STATE: u16 = 3;
 
+macro_rules! idle_animation_state { () => { vec![1.0, 0.0, 0.0] }; }
+macro_rules! walk_animation_state { () => { vec![0.0, 1.0, 0.0] }; }
+macro_rules! attack_animation_state { () => { vec![0.0, 0.0, 1.0] }; }
+
 #[main]
 pub fn main() {
     let ranged_idle = PlayClipFromUrlNode::new(
@@ -154,6 +158,8 @@ fn creep_idle_state_system(){
                         }
                     }
                 }
+                
+
 
                 //Do we have a hero close enough of the creep?
                 //If yes, pursue hero.
@@ -191,7 +197,7 @@ fn creep_move_state_system(idle_player: AnimationPlayer, walk_player: AnimationP
 
                 let anim_state = entity::get_component(anim_model, components::anim_state()).unwrap();
 
-                if anim_state == vec![0.0, 0.0, 1.0] {
+                if anim_state == attack_animation_state!() {
                     continue;
                 }
 
@@ -205,7 +211,7 @@ fn creep_move_state_system(idle_player: AnimationPlayer, walk_player: AnimationP
 
                     move_character(model, vec3(0., 0., -0.1), 0.01, delta_time());
 
-                    if anim_state != vec![0.0, 0.0, 1.0] {
+                    if anim_state != attack_animation_state!() {
                         entity::set_component(
                             anim_model,
                             apply_animation_player(),
@@ -214,7 +220,7 @@ fn creep_move_state_system(idle_player: AnimationPlayer, walk_player: AnimationP
                         entity::set_component(
                             anim_model,
                             components::anim_state(),
-                            vec![1.0, 0.0, 0.0],
+                            idle_animation_state!(),
                         );
 
                         let current_path_point = get_component(model, components::next_path_point()).unwrap();
@@ -249,12 +255,12 @@ fn creep_move_state_system(idle_player: AnimationPlayer, walk_player: AnimationP
                 let speed = 0.05;
                 let displace = diff.normalize_or_zero() * speed;
 
-                if anim_state != vec![0.0, 1.0, 0.0] {
+                if anim_state != walk_animation_state!() {
                     entity::set_component(anim_model, apply_animation_player(), walk_player.0);
                     entity::set_component(
                         anim_model,
                         components::anim_state(),
-                        vec![0.0, 1.0, 0.0],
+                        walk_animation_state!(),
                     );
                 }
                 let collision = move_character(
@@ -275,7 +281,7 @@ fn creep_move_state_system(idle_player: AnimationPlayer, walk_player: AnimationP
                     entity::set_component(
                         anim_model,
                         components::anim_state(),
-                        vec![1.0, 0.0, 0.0],
+                        idle_animation_state!(),
                     );
                 }
             }
@@ -341,7 +347,7 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
     entity::add_component(model, components::is_creep(), ());    
 
     entity::add_component(anim_model, apply_animation_player(), idle_player.0);
-    entity::add_component(anim_model, components::anim_state(), vec![1.0, 0.0]);
+    entity::add_component(anim_model, components::anim_state(), idle_animation_state!());
 
     entity::add_component(model, children(), vec![anim_model]);
     entity::add_component(model, components::anim_model(), anim_model);
