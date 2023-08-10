@@ -202,6 +202,16 @@ fn creep_idle_state_system(){
 }
 
 fn creep_pursuit_state_system(){
+    query((components::is_creep(), pursuit_target())).each_frame({
+        move |list| {
+            for (creep_model, (_, target_entity)) in list {
+                println!("Should be pursuing {:?}", target_entity);
+            }
+        }
+    });
+
+
+
 
 }
 
