@@ -27,4 +27,6 @@ creep_next_state = { type = "U16", name = "creep_next_state", description = "Sto
     "Debuggable",
 ]}
 
-
+pursuit_target = { type = "EntityId", name = "pursuit_target", description = "target for the creep to pursuit in its pursuit state", attributes = [
+    "Debuggable",
+]}
