@@ -83,7 +83,7 @@ fn checks_if_creeps_should_change_their_states_system() {
                         entity::remove_component(creep, components::target_pos());
                     }
                     else if current_state == CREEP_PURSUIT_STATE {
-
+                        
                     }
                     else if current_state == CREEP_ATTACK_STATE {
 
@@ -135,6 +135,7 @@ fn creep_idle_state_system(){
 
                 let creep_team = entity::get_component(creep_model, team()).unwrap();
 
+                //Do we have a hero close enough of the creep?
                 for (hero_id, (_, hero_role)) in all_heroes {
                     if creep_team%2 != hero_role%2 {
                         match closest_hero {
@@ -153,16 +154,23 @@ fn creep_idle_state_system(){
                                 if hero_dist < closest_hero_dist {
                                     closest_hero = Some(hero_id);
                                 }
-
                             }
                         }
                     }
                 }
                 
-
-
-                //Do we have a hero close enough of the creep?
                 //If yes, pursue hero.
+                if closest_hero != None {
+                    //TECHNOLOGICAL DEBT: Is there a better way to do this?
+                    entity::add_component(creep_model, pursuit_target(), closest_hero.unwrap());
+                    entity::set_component(creep_model, creep_next_state(), CREEP_PURSUIT_STATE);
+                    continue;
+                }
+
+
+
+                
+                
                 //else Do we have an enemy creep close enough of the creep?
                 //If yes, pursue creep.
                 //else Do we have an enemy base close enough of the creep?
