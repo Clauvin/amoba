@@ -129,13 +129,13 @@ fn creep_idle_state_system(){
     query(components::is_creep()).each_frame({
         move |list| {
 
-            for (creep_model, _) in list {
+            for (creep_model, _) in list.iter() {
                 //TECHNOLOGICAL DEBT: There's for sure a better alternative to solve this than evaluation of this for every creep, and the rest of the other calculations too
                 let all_heroes = all_heroes_query.evaluate();
                 
                 let mut closest_hero: Option<EntityId> = None;
 
-                let creep_team = entity::get_component(creep_model, team()).unwrap();
+                let creep_team = entity::get_component(*creep_model, team()).unwrap();
 
                 //Do we have a hero close enough of the creep?
                 for (hero_id, (_, hero_role, hero_model)) in all_heroes {
@@ -144,7 +144,7 @@ fn creep_idle_state_system(){
                             None => {
                                 let current_hero_pos = entity::get_component(hero_model, translation()).unwrap();
 
-                                let creep_pos = entity::get_component(creep_model, translation()).unwrap();
+                                let creep_pos = entity::get_component(*creep_model, translation()).unwrap();
 
                                 let hero_dist = (creep_pos.xy() - current_hero_pos.xy()).length();
 
@@ -158,7 +158,7 @@ fn creep_idle_state_system(){
 
                                 let current_hero_pos = entity::get_component(hero_model, translation()).unwrap();
 
-                                let creep_pos = entity::get_component(creep_model, translation()).unwrap();
+                                let creep_pos = entity::get_component(*creep_model, translation()).unwrap();
 
                                 let closest_hero_dist = (creep_pos.xy() - closest_hero_pos.xy()).length();
 
@@ -175,26 +175,30 @@ fn creep_idle_state_system(){
                 //If yes, pursue hero.
                 if closest_hero != None {
                     //TECHNOLOGICAL DEBT: Is there a better way to do this?
-                    entity::add_component(creep_model, pursuit_target(), closest_hero.unwrap());
-                    entity::set_component(creep_model, creep_next_state(), CREEP_PURSUIT_STATE);
+                    entity::add_component(*creep_model, pursuit_target(), closest_hero.unwrap());
+                    entity::set_component(*creep_model, creep_next_state(), CREEP_PURSUIT_STATE);
                     continue;
                 }
 
-                
                 //else Do we have an enemy creep close enough of the creep?
+                let mut closest_enemy_creep: Option<EntityId> = None;
+
+                for (creep_model_2, _) in list.iter(){
+
+                }
                 //If yes, pursue creep.
                 //else Do we have an enemy base close enough of the creep?
                 //If yes, pursue base.
                 
-                let current_state = entity::get_component(creep_model, creep_current_state()).unwrap();
-                let next_state = entity::get_component(creep_model, creep_next_state()).unwrap();
+                let current_state = entity::get_component(*creep_model, creep_current_state()).unwrap();
+                let next_state = entity::get_component(*creep_model, creep_next_state()).unwrap();
 
 
 
 
 
                 if current_state == next_state && current_state == CREEP_IDLE_STATE {
-                    entity::set_component(creep_model, creep_next_state(), CREEP_MOVE_STATE);
+                    entity::set_component(*creep_model, creep_next_state(), CREEP_MOVE_STATE);
                 }
 
             }
