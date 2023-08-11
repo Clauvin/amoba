@@ -184,6 +184,12 @@ fn creep_idle_state_system(){
                 let mut closest_enemy_creep: Option<EntityId> = None;
 
                 for (creep_model_2, _) in list.iter(){
+                    //If the creep_model_2 is not the same as the creep_model... ok, we will check if the creeps are in different teams, a creep can't be in a different team than
+                    // itself.
+                    
+                    //If creep_model_2 is in a different team than creep_model
+                    //Check distance, if distance <= maximum, pursue.
+
 
                 }
                 //If yes, pursue creep.
