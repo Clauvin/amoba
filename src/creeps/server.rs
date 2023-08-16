@@ -153,6 +153,7 @@ fn creep_idle_state_system(){
                                 }
                             }
                             //TECHNOLOGICAL DEBT: Refactor some var names here
+                            //and optimize the code a bit
                             Some(_) => {
                                 let closest_hero_pos = entity::get_component(closest_hero.unwrap(), translation()).unwrap();
 
