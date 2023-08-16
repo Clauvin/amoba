@@ -185,23 +185,62 @@ fn creep_idle_state_system(){
                 let mut closest_enemy_creep: Option<EntityId> = None;
 
                 for (creep_model_2, _) in list.iter(){
-                    //If the creep_model_2 is not the same as the creep_model... ok, we will check if the creeps are in different teams, a creep can't be in a different team than
-                    // itself.
-                    
+                    let team_of_first_creep = entity::get_component(*creep_model, team());
+                    let team_of_second_creep = entity::get_component(*creep_model, team());
+
+                    //TECHNOLOGICAL DEBT: Refactor some var names here
+                    //and optimize the code a bit
+                    if team_of_first_creep != team_of_second_creep {
+                        match closest_enemy_creep {
+                            None => {
+                                let other_creep_position = entity::get_component(*creep_model_2, translation()).unwrap();
+
+                                let current_creep_position = entity::get_component(*creep_model, translation()).unwrap();
+
+                                let creep_dist = (current_creep_position.xy() - other_creep_position.xy()).length();
+
+                                if creep_dist <= CREEP_MAXIMUM_PURSUIT_CHECK_DISTANCE {
+                                    closest_enemy_creep = Some(*creep_model_2);
+                                }
+
+                            }
+                            Some(_) => {
+                                let closest_creep_position = entity::get_component(closest_enemy_creep.unwrap(), translation()).unwrap();
+
+                                let other_creep_position = entity::get_component(*creep_model_2, translation()).unwrap();
+
+                                let current_creep_position = entity::get_component(*creep_model, translation()).unwrap();
+
+                                let closest_creep_distance = (current_creep_position.xy() - closest_creep_position.xy()).length();
+
+                                let new_creep_distance = (current_creep_position.xy() - other_creep_position.xy()).length();
+
+                                if new_creep_distance < closest_creep_distance {
+                                    closest_enemy_creep = Some(*creep_model_2);
+                                }
+                                
+                            }
+                        }
+                    }
+                                        
                     //If creep_model_2 is in a different team than creep_model
                     //Check distance, if distance <= maximum, pursue.
 
-
                 }
+
+                if closest_enemy_creep != None {
+                    //TECHNOLOGICAL DEBT: Is there a better way to do this?
+                    entity::add_component(*creep_model, pursuit_target(), closest_enemy_creep.unwrap());
+                    entity::set_component(*creep_model, creep_next_state(), CREEP_PURSUIT_STATE);
+                    continue;
+                }
+
                 //If yes, pursue creep.
                 //else Do we have an enemy base close enough of the creep?
                 //If yes, pursue base.
                 
                 let current_state = entity::get_component(*creep_model, creep_current_state()).unwrap();
                 let next_state = entity::get_component(*creep_model, creep_next_state()).unwrap();
-
-
-
 
 
                 if current_state == next_state && current_state == CREEP_IDLE_STATE {
