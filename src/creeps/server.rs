@@ -132,43 +132,33 @@ fn creep_idle_state_system(){
             for (creep_model, _) in list.iter() {
                 //TECHNOLOGICAL DEBT: There's for sure a better alternative to solve this than evaluation of this for every creep, and the rest of the other calculations too
                 let all_heroes = all_heroes_query.evaluate();
-                
-                let mut closest_hero: Option<EntityId> = None;
-                let mut closest_hero_distance: Option<f32> = None;
 
                 let creep_team = entity::get_component(*creep_model, team()).unwrap();
+
+                let creep_pos = entity::get_component(*creep_model, translation()).unwrap();
+
+                let mut closest_hero: Option<EntityId> = None;
+                let mut closest_hero_distance: Option<f32> = None;
 
                 //Do we have a hero close enough of the creep?
                 for (hero_id, (_, hero_role, hero_model)) in all_heroes {
                     if creep_team%2 != hero_role%2 {
+
+                        let current_hero_pos = entity::get_component(hero_model, translation()).unwrap();
+
+                        let hero_dist = (creep_pos.xy() - current_hero_pos.xy()).length();
+
                         match closest_hero {
                             None => {
-                                let current_hero_pos = entity::get_component(hero_model, translation()).unwrap();
-
-                                let creep_pos = entity::get_component(*creep_model, translation()).unwrap();
-
-                                let hero_dist = (creep_pos.xy() - current_hero_pos.xy()).length();
-
                                 if hero_dist <= CREEP_MAXIMUM_PURSUIT_CHECK_DISTANCE {
                                     closest_hero = Some(hero_model);
                                     closest_hero_distance = Some(hero_dist);
                                 }
                             }
-                            //TECHNOLOGICAL DEBT: Refactor some var names here
-                            //and optimize the code a bit
                             Some(_) => {
-                                let closest_hero_pos = entity::get_component(closest_hero.unwrap(), translation()).unwrap();
-
-                                let current_hero_pos = entity::get_component(hero_model, translation()).unwrap();
-
-                                let creep_pos = entity::get_component(*creep_model, translation()).unwrap();
-
-                                let closest_hero_dist = (creep_pos.xy() - closest_hero_pos.xy()).length();
-
-                                let hero_dist = (creep_pos.xy() - current_hero_pos.xy()).length();
-
-                                if hero_dist < closest_hero_dist {
+                                if hero_dist < closest_hero_distance.unwrap() {
                                     closest_hero = Some(hero_id);
+                                    closest_hero_distance = Some(hero_dist);
                                 }
                             }
                         }
