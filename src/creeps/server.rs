@@ -163,7 +163,6 @@ fn creep_idle_state_system(){
                     }
                 }
                 
-                //If yes, pursue hero.
                 if closest_hero != None {
                     //TECHNOLOGICAL DEBT: Is there a better way to do this?
                     entity::add_component(*creep_model, pursuit_target(), closest_hero.unwrap());
