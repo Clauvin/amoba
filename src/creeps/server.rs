@@ -172,6 +172,7 @@ fn creep_idle_state_system(){
 
                 //else Do we have an enemy creep close enough of the creep?
                 let mut closest_enemy_creep: Option<EntityId> = None;
+                let mut distance_of_closest_enemy_creep: Option<f32> = None;
 
                 for (creep_model_2, _) in list.iter(){
                     let team_of_first_creep = entity::get_component(*creep_model, team());
