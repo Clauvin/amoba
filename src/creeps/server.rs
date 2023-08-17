@@ -190,7 +190,7 @@ fn creep_idle_state_system(){
                                 }
                             }
                             Some(_) => {
-                                if distance_of_second_creep < distance_of_closest_enemy_creep {
+                                if distance_of_second_creep < distance_of_closest_enemy_creep.unwrap() {
                                     closest_enemy_creep = Some(*creep_model_2);
                                     distance_of_closest_enemy_creep = Some(distance_of_second_creep);
                                 }
