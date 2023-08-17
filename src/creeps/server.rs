@@ -208,7 +208,39 @@ fn creep_idle_state_system(){
                     continue;
                 }
 
-                
+                let closest_base: Option<EntityId> = None;
+                let distance_of_closest_enemy_base = None;
+
+                let all_bases = all_bases_query.evaluate();
+                for (base_id, base_side) in all_bases.iter(){
+                    if *base_side != team_of_first_creep.unwrap() {
+                        let position_of_base = entity::get_component(*base_id, translation()).unwrap();
+
+                        let distance_between_creep_and_base = (creep_position.xy() - position_of_base.xy()).length();
+
+                        match closest_base {
+                            None => {
+                                if distance_between_creep_and_base <= CREEP_MAXIMUM_PURSUIT_CHECK_DISTANCE {
+                                    closest_base = Some(*base_id);
+                                    distance_of_closest_enemy_base = Some(distance_between_creep_and_base);
+                                }
+                            }
+                            Some(_) => {
+                                if distance_between_creep_and_base <= distance_of_closest_enemy_base.unwrap() {
+                                    closest_base = Some(*base_id);
+                                    distance_of_closest_enemy_base = Some(distance_between_creep_and_base);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if closest_base != None {
+                    entity::add_component(*creep_model, pursuit_target(), closest_base.unwrap());
+                    entity::set_component(*creep_model, creep_next_state(), CREEP_PURSUIT_STATE);
+                    continue;
+                }
+
 
 
                 //else Do we have an enemy base close enough of the creep?
