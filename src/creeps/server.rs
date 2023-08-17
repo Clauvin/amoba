@@ -208,8 +208,8 @@ fn creep_idle_state_system(){
                     continue;
                 }
 
-                let closest_base: Option<EntityId> = None;
-                let distance_of_closest_enemy_base = None;
+                let mut closest_base: Option<EntityId> = None;
+                let mut distance_of_closest_enemy_base = None;
 
                 let all_bases = all_bases_query.evaluate();
                 for (base_id, base_side) in all_bases.iter(){
