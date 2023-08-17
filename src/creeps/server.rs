@@ -170,7 +170,6 @@ fn creep_idle_state_system(){
                     continue;
                 }
 
-                //else Do we have an enemy creep close enough of the creep?
                 let mut closest_enemy_creep: Option<EntityId> = None;
                 let mut distance_of_closest_enemy_creep: Option<f32> = None;
 
@@ -207,9 +206,9 @@ fn creep_idle_state_system(){
                     continue;
                 }
 
-
-
                 
+
+
                 //else Do we have an enemy base close enough of the creep?
                 //If yes, pursue base.
                 
