@@ -14,7 +14,7 @@ is_creep = { type = "Empty", name = "is_creep", description = "a creep, a NPC th
     "Debuggable",
 ] }
 
-team = { type = "U8", name = "Team", description = "0=>Mars, 1=>Jupiter, 2=>... As role seems to be made for heroes, team is a more generic component for creeps.", attributes = [
+team = { type = "U32", name = "Team", description = "0=>Mars, 1=>Jupiter, 2=>... As role seems to be made for heroes, team is a more generic component for creeps.", attributes = [
     "Debuggable",
     "Networked",
 ]}
