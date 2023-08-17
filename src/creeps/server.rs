@@ -134,6 +134,7 @@ fn creep_idle_state_system(){
                 let all_heroes = all_heroes_query.evaluate();
                 
                 let mut closest_hero: Option<EntityId> = None;
+                let mut closest_hero_distance: Option<f32> = None;
 
                 let creep_team = entity::get_component(*creep_model, team()).unwrap();
 
@@ -150,6 +151,7 @@ fn creep_idle_state_system(){
 
                                 if hero_dist <= CREEP_MAXIMUM_PURSUIT_CHECK_DISTANCE {
                                     closest_hero = Some(hero_model);
+                                    closest_hero_distance = Some(hero_dist);
                                 }
                             }
                             //TECHNOLOGICAL DEBT: Refactor some var names here
