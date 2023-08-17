@@ -138,7 +138,7 @@ fn creep_idle_state_system(){
                 let creep_pos = entity::get_component(*creep_model, translation()).unwrap();
 
                 let mut closest_hero: Option<EntityId> = None;
-                let mut closest_hero_distance: Option<f32> = None;
+                let mut distance_of_closest_hero: Option<f32> = None;
 
                 //Do we have a hero close enough of the creep?
                 for (hero_id, (_, hero_role, hero_model)) in all_heroes {
@@ -152,13 +152,13 @@ fn creep_idle_state_system(){
                             None => {
                                 if hero_dist <= CREEP_MAXIMUM_PURSUIT_CHECK_DISTANCE {
                                     closest_hero = Some(hero_model);
-                                    closest_hero_distance = Some(hero_dist);
+                                    distance_of_closest_hero = Some(hero_dist);
                                 }
                             }
                             Some(_) => {
-                                if hero_dist < closest_hero_distance.unwrap() {
+                                if hero_dist < distance_of_closest_hero.unwrap() {
                                     closest_hero = Some(hero_id);
-                                    closest_hero_distance = Some(hero_dist);
+                                    distance_of_closest_hero = Some(hero_dist);
                                 }
                             }
                         }
