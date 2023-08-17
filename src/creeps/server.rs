@@ -185,9 +185,7 @@ fn creep_idle_state_system(){
                             None => {
                                 let other_creep_position = entity::get_component(*creep_model_2, translation()).unwrap();
 
-                                let current_creep_position = entity::get_component(*creep_model, translation()).unwrap();
-
-                                let creep_dist = (current_creep_position.xy() - other_creep_position.xy()).length();
+                                let creep_dist = (creep_position.xy() - other_creep_position.xy()).length();
 
                                 if creep_dist <= CREEP_MAXIMUM_PURSUIT_CHECK_DISTANCE {
                                     closest_enemy_creep = Some(*creep_model_2);
@@ -199,11 +197,9 @@ fn creep_idle_state_system(){
 
                                 let other_creep_position = entity::get_component(*creep_model_2, translation()).unwrap();
 
-                                let current_creep_position = entity::get_component(*creep_model, translation()).unwrap();
+                                let closest_creep_distance = (creep_position.xy() - closest_creep_position.xy()).length();
 
-                                let closest_creep_distance = (current_creep_position.xy() - closest_creep_position.xy()).length();
-
-                                let new_creep_distance = (current_creep_position.xy() - other_creep_position.xy()).length();
+                                let new_creep_distance = (creep_position.xy() - other_creep_position.xy()).length();
 
                                 if new_creep_distance < closest_creep_distance {
                                     closest_enemy_creep = Some(*creep_model_2);
