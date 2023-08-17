@@ -135,7 +135,7 @@ fn creep_idle_state_system(){
 
                 let creep_team = entity::get_component(*creep_model, team()).unwrap();
 
-                let creep_pos = entity::get_component(*creep_model, translation()).unwrap();
+                let creep_position = entity::get_component(*creep_model, translation()).unwrap();
 
                 let mut closest_hero: Option<EntityId> = None;
                 let mut distance_of_closest_hero: Option<f32> = None;
@@ -144,21 +144,21 @@ fn creep_idle_state_system(){
                 for (hero_id, (_, hero_role, hero_model)) in all_heroes {
                     if creep_team%2 != hero_role%2 {
 
-                        let current_hero_pos = entity::get_component(hero_model, translation()).unwrap();
+                        let current_hero_position = entity::get_component(hero_model, translation()).unwrap();
 
-                        let hero_dist = (creep_pos.xy() - current_hero_pos.xy()).length();
+                        let distance_of_hero = (creep_position.xy() - current_hero_position.xy()).length();
 
                         match closest_hero {
                             None => {
-                                if hero_dist <= CREEP_MAXIMUM_PURSUIT_CHECK_DISTANCE {
+                                if distance_of_hero <= CREEP_MAXIMUM_PURSUIT_CHECK_DISTANCE {
                                     closest_hero = Some(hero_model);
-                                    distance_of_closest_hero = Some(hero_dist);
+                                    distance_of_closest_hero = Some(distance_of_hero);
                                 }
                             }
                             Some(_) => {
-                                if hero_dist < distance_of_closest_hero.unwrap() {
+                                if distance_of_hero < distance_of_closest_hero.unwrap() {
                                     closest_hero = Some(hero_id);
-                                    distance_of_closest_hero = Some(hero_dist);
+                                    distance_of_closest_hero = Some(distance_of_hero);
                                 }
                             }
                         }
