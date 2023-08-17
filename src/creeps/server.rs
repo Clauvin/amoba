@@ -176,7 +176,7 @@ fn creep_idle_state_system(){
 
                 for (creep_model_2, _) in list.iter(){
                     let team_of_first_creep = entity::get_component(*creep_model, team());
-                    let team_of_second_creep = entity::get_component(*creep_model, team());
+                    let team_of_second_creep = entity::get_component(*creep_model_2, team());
 
                     //TECHNOLOGICAL DEBT: Refactor some var names here
                     //and optimize the code a bit
