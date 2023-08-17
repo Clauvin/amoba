@@ -124,7 +124,7 @@ fn checks_if_creeps_should_change_their_states_system() {
 
 fn creep_idle_state_system(){
     let all_heroes_query = query((components::hero_model(), components::role(), components::hero_model())).build();
-
+    let all_bases_query = query(components::base_side()).build();
 
     query(components::is_creep()).each_frame({
         move |list| {
