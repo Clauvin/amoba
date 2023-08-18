@@ -7,7 +7,7 @@ use ambient_api::{
         app::name,
         ecs::{parent, children},
         prefab::prefab_from_url,
-        animation::apply_animation_player
+        animation::apply_animation_player, rendering::color
     },
     ecs::query,
     concepts::make_transformable,
@@ -15,7 +15,7 @@ use ambient_api::{
     physics::move_character, 
     prelude::{
         Quat, Entity, EntityId, Vec3, Vec2, Vec3Swizzles,
-        vec3, delta_time, 
+        vec3, delta_time, vec4, 
     }, main, 
 };
 use components::{team, is_creep, creep_current_state, creep_next_state, pursuit_target};
@@ -428,6 +428,12 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
         .with_default(local_to_world())
         .with(translation(), vec3(0.0, 0.0, 0.))
         .spawn();
+
+    match which_team {
+        MARS_TEAM => entity::add_component(anim_model, color(), vec4(1.0, 0.0, 0.1, 1.)),
+        JUPYTER_TEAM => entity::add_component(anim_model, color(), vec4(0., 0., 1., 1.)),
+        2..=u32::MAX => {panic!("Hang on, we have neutral creeps now?");}
+    }
 
     entity::add_component(model, components::is_creep(), ());    
 
