@@ -416,13 +416,22 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
         .with(creep_next_state(), CREEP_MOVE_STATE)
         .spawn();
 
+    let mut creep_model_address = "";
+
+    match which_team{
+        MARS_TEAM => creep_model_address = "assets/model/copzombie_l_actisdato.fbx",
+        JUPYTER_TEAM => creep_model_address = "assets/model/Yaku J Ignite.fbx",
+        2_u32..=u32::MAX => panic!("Hang on, we have neutral creeps now?")
+    }
+    
+
     let anim_model = Entity::new()
         .with_merge(make_transformable())
         .with_default(dynamic())
         .with(parent(), model)
         .with(
             prefab_from_url(),
-            asset::url("assets/model/copzombie_l_actisdato.fbx").unwrap(),
+            asset::url(creep_model_address).unwrap(),
         )
         .with_default(local_to_parent())
         .with_default(local_to_world())
