@@ -14,6 +14,9 @@ use ambient_api::{
     prelude::*,
 };
 
+const MARS_TEAM: u32 = 0;
+const JUPYTER_TEAM: u32 = 1;
+
 #[main]
 pub fn main() {
     let mars_ball = Entity::new()
