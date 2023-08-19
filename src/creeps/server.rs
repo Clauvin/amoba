@@ -438,12 +438,6 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
         .with(translation(), vec3(0.0, 0.0, 0.))
         .spawn();
 
-    match which_team {
-        MARS_TEAM => entity::add_component(anim_model, color(), vec4(1.0, 0.0, 0.1, 1.)),
-        JUPYTER_TEAM => entity::add_component(anim_model, color(), vec4(0., 0., 1., 1.)),
-        2..=u32::MAX => {panic!("Hang on, we have neutral creeps now?");}
-    }
-
     entity::add_component(model, components::is_creep(), ());    
 
     entity::add_component(anim_model, apply_animation_player(), idle_player.0);
