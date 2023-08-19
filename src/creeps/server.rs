@@ -378,16 +378,19 @@ fn creep_attack_state_system(){
 
 
 fn spawns_creeps_regularly_system(idle_player:AnimationPlayer) {
-    //Spawns mars creeps regularly from the mars paths starting points
-    query((translation(), components::is_path_point(), components::is_first_mars_point())).each_frame({
+    query((translation(), components::is_path_point(), components::is_creep_spawn_point())).each_frame({
         move |list| {
             let time_to_next_creep_spawn = entity::get_component(resources(), components::spawn_timer()).unwrap();
 
             if time_to_next_creep_spawn <= 0. {
-                for (mars_spawn_point_entity_id, (coordinates, _, _)) in list {
-                    let next_path_point = entity::get_component(mars_spawn_point_entity_id, components::next_path_point()).unwrap();
-                
-                    create_ranged_creep(coordinates, idle_player, next_path_point, MARS_TEAM);
+                for (spawn_point_entity_id, (coordinates, _, which_team)) in list {
+                    let next_path_point = entity::get_component(spawn_point_entity_id, components::next_path_point()).unwrap();
+              
+                    match which_team {
+                        MARS_TEAM => {create_ranged_creep(coordinates, idle_player, next_path_point, MARS_TEAM);},
+                        JUPYTER_TEAM => {create_ranged_creep(coordinates, idle_player, next_path_point, JUPYTER_TEAM);},
+                        2_u32..=u32::MAX => panic!("Hang on, we have neutral spawns now?")
+                    }
                 }
                 entity::set_component(resources(), components::spawn_timer(), TIME_TO_NEXT_CREEP_SPAWNS);
             }
