@@ -55,7 +55,6 @@ pub fn main() {
     
     checks_if_creeps_should_change_their_states_system();
 
-    creep_idle_state_system();
     creep_pursuit_state_system();
     creep_move_state_system(idle_player, walk_player);
     creep_attack_state_system();
@@ -75,10 +74,7 @@ fn checks_if_creeps_should_change_their_states_system() {
                     
                     //Refactor this code to use a match instead
                     //Leaving current_state
-                    if current_state == CREEP_IDLE_STATE {
-
-                    }
-                    else if current_state == CREEP_MOVE_STATE {
+                    if current_state == CREEP_MOVE_STATE {
                         entity::remove_component(creep, components::target_pos());
                     }
                     else if current_state == CREEP_PURSUIT_STATE {
@@ -89,10 +85,7 @@ fn checks_if_creeps_should_change_their_states_system() {
                     }
 
                     //Entering next_state
-                    if next_state == CREEP_IDLE_STATE {
-
-                    }
-                    else if next_state == CREEP_MOVE_STATE {
+                    if next_state == CREEP_MOVE_STATE {
                         let next_path_point = entity::get_component(creep, components::next_path_point()).unwrap();
     
                         let target = get_component(next_path_point, translation()).unwrap();
@@ -119,7 +112,21 @@ fn checks_if_creeps_should_change_their_states_system() {
 
 }
 
-fn creep_idle_state_system(){
+fn creep_pursuit_state_system(){
+    query((components::is_creep(), pursuit_target())).each_frame({
+        move |list| {
+            for (creep_model, (_, target_entity)) in list {
+                println!("Should be pursuing {:?}", target_entity);
+            }
+        }
+    });
+
+
+
+
+}
+
+fn creep_move_state_system(idle_player: AnimationPlayer, walk_player: AnimationPlayer){
     let all_heroes_query = query((components::hero_model(), components::role(), components::hero_model())).build();
     let all_bases_query = query(components::base_side()).build();
 
@@ -237,40 +244,10 @@ fn creep_idle_state_system(){
                     entity::set_component(*creep_model, creep_next_state(), CREEP_PURSUIT_STATE);
                     continue;
                 }
-
-
-
-                //else Do we have an enemy base close enough of the creep?
-                //If yes, pursue base.
-                
-                let current_state = entity::get_component(*creep_model, creep_current_state()).unwrap();
-                let next_state = entity::get_component(*creep_model, creep_next_state()).unwrap();
-
-
-                if current_state == next_state && current_state == CREEP_IDLE_STATE {
-                    entity::set_component(*creep_model, creep_next_state(), CREEP_MOVE_STATE);
-                }
-
-            }
-        }
-    });
-}
-
-fn creep_pursuit_state_system(){
-    query((components::is_creep(), pursuit_target())).each_frame({
-        move |list| {
-            for (creep_model, (_, target_entity)) in list {
-                println!("Should be pursuing {:?}", target_entity);
             }
         }
     });
 
-
-
-
-}
-
-fn creep_move_state_system(idle_player: AnimationPlayer, walk_player: AnimationPlayer){
     query((components::is_creep(), components::target_pos())).each_frame({
         move |list| {
             for (model, (_, _)) in list {
@@ -448,6 +425,10 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
     entity::add_component(model, components::next_path_point(), next_path_point);
 
     entity::add_component(model, team(), which_team);
+    
+    let target = get_component(next_path_point, translation()).unwrap();
+
+    entity::add_component(model, components::target_pos(), Vec2{x:target.x, y:target.y});
 
     model
 }
