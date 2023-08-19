@@ -14,6 +14,10 @@ is_path_point = { type = "Bool", name = "is_path_point", description = "path poi
     "Debuggable",
 ] }
 
+is_creep_spawn_point = {type = "U32", name = "is_creep_spawn_point", description = "from where creeps spawn. 0 = Mars spawn point, 1 = Jupyter spawn point", atributes = [
+    "Debuggable",
+] }
+
 is_first_mars_point = { type = "Bool", name = "is_first_mars_point", description = "first mars point, from where mars creep spawns happen", atributes = [
     "Debuggable",
 ] }
