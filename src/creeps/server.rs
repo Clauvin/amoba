@@ -417,7 +417,7 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
 
     match which_team{
         MARS_TEAM => creep_model_address = "assets/model/copzombie_l_actisdato.fbx",
-        JUPYTER_TEAM => creep_model_address = "assets/model/Yaku J Ignite.fbx",
+        JUPYTER_TEAM => creep_model_address = "assets/model/X Bot.fbx",
         2_u32..=u32::MAX => panic!("Hang on, we have neutral creeps now?")
     }
     
