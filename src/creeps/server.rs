@@ -123,7 +123,7 @@ fn creep_idle_state_system(){
     let all_heroes_query = query((components::hero_model(), components::role(), components::hero_model())).build();
     let all_bases_query = query(components::base_side()).build();
 
-    query(components::is_creep()).each_frame({
+    query(components::is_creep()).excludes(components::pursuit_target()).each_frame({
         move |list| {
 
             for (creep_model, _) in list.iter() {
