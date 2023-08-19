@@ -93,7 +93,7 @@ fn checks_if_creeps_should_change_their_states_system() {
                         entity::add_component(creep, components::target_pos(), Vec2{x:target.x, y:target.y});
                     }
                     else if next_state == CREEP_PURSUIT_STATE {
-
+                        //TECHNOLOGICAL DEBT: by now, the pursuit_target() component is added by the idle state itself in case of a state change
                     }
                     else if next_state == CREEP_ATTACK_STATE {
 
