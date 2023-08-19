@@ -18,6 +18,10 @@ is_first_mars_point = { type = "Bool", name = "is_first_mars_point", description
     "Debuggable",
 ] }
 
+is_first_jupyter_point = { type = "Bool", name = "is_first_jupyter_point", description = "first jupyter point, from where jupyter creep spawns happen", atributes = [
+    "Debuggable",
+] }
+
 next_path_point = { type = "EntityId", name = "next_path_point", description = "next path point for creeps to go after reaching this one.", attributes = [
     "Debuggable",
 ] }
