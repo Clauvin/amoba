@@ -56,11 +56,8 @@ pub fn main() {
     checks_if_creeps_should_change_their_states_system();
 
     creep_idle_state_system();
-    
     creep_pursuit_state_system();
-    
     creep_move_state_system(idle_player, walk_player);
-    
     creep_attack_state_system();
 
     spawns_creeps_regularly_system(idle_player);
