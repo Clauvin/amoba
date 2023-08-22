@@ -78,39 +78,30 @@ fn checks_if_creeps_should_change_their_states_system() {
             for (creep, (_, current_state, next_state)) in list {
                 if current_state != next_state {
                     
-                    //Refactor this code to use a match instead
                     //Leaving current_state
-                    if current_state == CREEP_MOVE_STATE {
-                        entity::remove_component(creep, components::target_pos());
-                    }
-                    else if current_state == CREEP_PURSUIT_STATE {
-                        entity::remove_component(creep, pursuit_target());
-                    }
-                    else if current_state == CREEP_ATTACK_STATE {
-                        entity::remove_component(creep, attack_target());
+                    match current_state {
+                        CREEP_MOVE_STATE => {entity::remove_component(creep, components::target_pos());},
+                        CREEP_PURSUIT_STATE => {entity::remove_component(creep, pursuit_target());},
+                        CREEP_ATTACK_STATE => {entity::remove_component(creep, attack_target());},
+                        3_u16..=u16::MAX => panic!("How we reached this point where we want to leave a state that does not exist?"),
                     }
 
                     //Entering next_state
-                    if next_state == CREEP_MOVE_STATE {
-                        let next_path_point = entity::get_component(creep, components::next_path_point()).unwrap();
-    
-                        let target = get_component(next_path_point, translation()).unwrap();
-
-                        entity::add_component(creep, components::target_pos(), Vec2{x:target.x, y:target.y});
-                    }
-                    else if next_state == CREEP_PURSUIT_STATE {
-                        //TECHNOLOGICAL DEBT: by now, the pursuit_target() component is added by the move state itself in case of a state change
-                    }
-                    else if next_state == CREEP_ATTACK_STATE {
-                        //TECHNOLOGICAL DEBT: by now, the attack_target() component is added by the pursuit state itself in case of a state change
+                    match next_state {
+                        CREEP_MOVE_STATE => {
+                            let next_path_point = entity::get_component(creep, components::next_path_point()).unwrap();
+                            let target = get_component(next_path_point, translation()).unwrap();
+                            entity::add_component(creep, components::target_pos(), Vec2{x:target.x, y:target.y});
+                        },
+                        CREEP_PURSUIT_STATE => { /*TECHNOLOGICAL DEBT: by now, the pursuit_target() component is added by the move state itself in case of a state change*/ },
+                        CREEP_ATTACK_STATE => { /*TECHNOLOGICAL DEBT: by now, the attack_target() component is added by the pursuit state itself in case of a state change*/ },
+                        3_u16..=u16::MAX => panic!("How we reached this point where we want to go to a state that does not exist?"),
                     }
 
                     entity::set_component(creep, creep_current_state(), next_state);
                     //println!("Changed state from {:?} to {:?}", current_state, next_state);
                 }
             }
-
-
         }
     });
 
