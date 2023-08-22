@@ -89,7 +89,7 @@ fn checks_if_creeps_should_change_their_states_system() {
                         entity::remove_component(creep, pursuit_target());
                     }
                     else if current_state == CREEP_ATTACK_STATE {
-
+                        entity::remove_component(creep, attack_target());
                     }
 
                     //Entering next_state
@@ -368,8 +368,6 @@ fn creep_pursuit_state_system(idle_player: AnimationPlayer, pursuit_player: Anim
 
                     continue;
                 }
-
-
                 //-----------------------
 
                 let target_direction = diff;
