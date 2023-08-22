@@ -27,10 +27,9 @@ const JUPYTER_TEAM: u32 = 1;
 
 const TIME_TO_NEXT_CREEP_SPAWNS: f32 = 5.;
 
-const CREEP_IDLE_STATE: u16 = 0;
-const CREEP_MOVE_STATE: u16 = 1;
-const CREEP_PURSUIT_STATE: u16 = 2;
-const CREEP_ATTACK_STATE: u16 = 3;
+const CREEP_MOVE_STATE: u16 = 0;
+const CREEP_PURSUIT_STATE: u16 = 1;
+const CREEP_ATTACK_STATE: u16 = 2;
 
 const CREEP_MAXIMUM_PURSUIT_CHECK_DISTANCE: f32 = 10.;
 const CREEP_MAXIMUM_ATTACK_CHECK_DISTANCE: f32 = 5.;
@@ -122,6 +121,7 @@ fn creep_pursuit_state_system(){
         }
     });
 
+    
 
 
 
@@ -390,7 +390,7 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
         .with_default(local_to_world())
         .with(rotation(), Quat::from_rotation_z(-INIT_POS))
         .with(name(), "Ranged Creep".to_string())
-        .with(creep_current_state(), CREEP_IDLE_STATE)
+        .with(creep_current_state(), CREEP_MOVE_STATE)
         .with(creep_next_state(), CREEP_MOVE_STATE)
         .spawn();
 
