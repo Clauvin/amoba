@@ -121,14 +121,6 @@ fn checks_if_creeps_should_change_their_states_system() {
 }
 
 fn creep_pursuit_state_system(idle_player: AnimationPlayer, pursuit_player: AnimationPlayer){
-    query((components::is_creep(), pursuit_target())).each_frame({
-        move |list| {
-            for (creep_model, (_, target_entity)) in list {
-                println!("Should be pursuing {:?}", target_entity);
-            }
-        }
-    });
-
     //TECHNOLOGICAL DEBT: this code is REALLY similar to the move code from the move state, I should encapsulate it to reduce code duplication
     query((components::is_creep(), pursuit_target())).each_frame({
         move |list| {
