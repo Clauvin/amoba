@@ -56,6 +56,7 @@ pub fn main() {
     let idle_player = AnimationPlayer::new(&ranged_idle);
     let walk_player = AnimationPlayer::new(&ranged_walk);
     let pursuit_player = AnimationPlayer::new(&ranged_pursuit);
+    
 
     entity::add_component(resources(), components::spawn_timer(), TIME_TO_NEXT_CREEP_SPAWNS);
     
@@ -124,6 +125,105 @@ fn creep_pursuit_state_system(idle_player: AnimationPlayer, pursuit_player: Anim
         move |list| {
             for (creep_model, (_, target_entity)) in list {
                 println!("Should be pursuing {:?}", target_entity);
+            }
+        }
+    });
+
+    //TECHNOLOGICAL DEBT: this code is REALLY similar to the move code from the move state, I should encapsulate it to reduce code duplication
+    query((components::is_creep(), pursuit_target())).each_frame({
+        move |list| {
+            for (model, (_, pursuit_target)) in list {
+                
+                let anim_model = entity::get_component(model, components::anim_model()).unwrap();
+                let anim_state = entity::get_component(anim_model, components::anim_state()).unwrap();
+
+                if anim_state == attack_animation_state!() {
+                    continue;
+                }
+
+                let current_pos = entity::get_component(model, translation()).unwrap();
+
+                let target_pos = entity::get_component(pursuit_target, translation()).unwrap().xy();
+
+                let diff = target_pos - current_pos.xy();
+
+                if diff.length() < 1.0 {
+
+                    move_character(model, vec3(0., 0., -0.1), 0.01, delta_time());
+
+                    if anim_state != attack_animation_state!() {
+                        entity::set_component(
+                            anim_model,
+                            apply_animation_player(),
+                            idle_player.0,
+                        );
+                        entity::set_component(
+                            anim_model,
+                            components::anim_state(),
+                            idle_animation_state!(),
+                        );
+
+                        let current_path_point = get_component(model, components::next_path_point()).unwrap();
+
+                        let next_path_point = match get_component(current_path_point, components::next_path_point()) {
+                            Some(next) => next,
+                            None => current_path_point
+                        };
+
+                        set_component(model, components::next_path_point(), next_path_point);
+
+                        let next_target = get_component(next_path_point, translation()).unwrap();
+
+                        entity::set_component(model, components::target_pos(), Vec2{x:next_target.x, y:next_target.y});
+
+                        continue;
+                    }
+                }
+
+
+                //-----------------------
+
+                let target_direction = diff;
+                let initial_direction: Vec2 = Vec2::new(1.0, 0.0);
+                let dot = initial_direction.dot(target_direction);
+                let det = initial_direction.x * target_direction.y
+                    - initial_direction.y * target_direction.x;
+                let angle = det.atan2(dot);
+                let rot: Quat = Quat::from_rotation_z(angle - INIT_POS);
+                entity::set_component(model, rotation(), rot);
+
+                let speed = 0.05;
+                let displace = diff.normalize_or_zero() * speed;
+
+                if anim_state != pursuit_animation_state!() {
+                    entity::set_component(anim_model, apply_animation_player(), pursuit_player.0);
+                    entity::set_component(
+                        anim_model,
+                        components::anim_state(),
+                        pursuit_animation_state!(),
+                    );
+                }
+                let collision = move_character(
+                    model,
+                    vec3(displace.x, displace.y, -0.1),
+                    0.01,
+                    delta_time(),
+                );
+
+                if collision.side {
+                    //commented out the target_pos change as it's breaking the path finding.
+                    /*entity::set_component(
+                        model,
+                        components::target_pos(),
+                        current_pos.xy(),
+                    );*/
+                    entity::set_component(anim_model, apply_animation_player(), idle_player.0);
+                    entity::set_component(
+                        anim_model,
+                        components::anim_state(),
+                        idle_animation_state!(),
+                    );
+                }
             }
         }
     });
