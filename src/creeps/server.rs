@@ -118,9 +118,7 @@ fn creep_move_state_system(idle_player: AnimationPlayer, walk_player: AnimationP
 
             let all_heroes = all_heroes_query.evaluate();
 
-            for (creep_model, _) in list.iter() {
-                //TECHNOLOGICAL DEBT: There's for sure a better alternative to solve this than evaluation of this for every creep, and the rest of the other calculations too
-                
+            for (creep_model, _) in list.iter() {             
                 let creep_team = entity::get_component(*creep_model, team()).unwrap();
 
                 let creep_position = entity::get_component(*creep_model, translation()).unwrap();
