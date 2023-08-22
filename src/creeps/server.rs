@@ -34,6 +34,8 @@ const CREEP_ATTACK_STATE: u16 = 2;
 const CREEP_MAXIMUM_PURSUIT_CHECK_DISTANCE: f32 = 10.;
 const CREEP_MAXIMUM_ATTACK_CHECK_DISTANCE: f32 = 5.;
 
+const CREEP_MOVE_STATE_SPEED: f32 = 0.05;
+
 macro_rules! idle_animation_state { () => { vec![1.0, 0.0, 0.0, 0.0] }; }
 macro_rules! walk_animation_state { () => { vec![0.0, 1.0, 0.0, 0.0] }; }
 macro_rules! pursuit_animation_state { () => { vec![0.0, 0.0, 1.0, 0.0] }; }
@@ -293,7 +295,7 @@ fn creep_move_state_system(idle_player: AnimationPlayer, walk_player: AnimationP
                 let rot: Quat = Quat::from_rotation_z(angle - INIT_POS);
                 entity::set_component(model, rotation(), rot);
 
-                let speed = 0.05;
+                let speed = CREEP_MOVE_STATE_SPEED;
                 let displace = diff.normalize_or_zero() * speed;
 
                 if anim_state != walk_animation_state!() {
@@ -374,7 +376,7 @@ fn creep_pursuit_state_system(idle_player: AnimationPlayer, pursuit_player: Anim
                 let rot: Quat = Quat::from_rotation_z(angle - INIT_POS);
                 entity::set_component(model, rotation(), rot);
 
-                let speed = 0.05;
+                let speed = CREEP_MOVE_STATE_SPEED;
                 let displace = diff.normalize_or_zero() * speed;
 
                 if anim_state != pursuit_animation_state!() {
