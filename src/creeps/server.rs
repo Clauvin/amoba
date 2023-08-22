@@ -7,15 +7,15 @@ use ambient_api::{
         app::name,
         ecs::{parent, children},
         prefab::prefab_from_url,
-        animation::apply_animation_player, rendering::color
+        animation::apply_animation_player,
     },
     ecs::query,
     concepts::make_transformable,
-    entity::{self, get_component, set_component, resources, add_component}, 
+    entity::{self, get_component, set_component, resources}, 
     physics::move_character, 
     prelude::{
         Quat, Entity, EntityId, Vec3, Vec2, Vec3Swizzles,
-        vec3, delta_time, vec4, 
+        vec3, delta_time, 
     }, main, 
 };
 use components::{team, is_creep, creep_current_state, creep_next_state, pursuit_target, attack_target};
