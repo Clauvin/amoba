@@ -139,22 +139,9 @@ fn creep_pursuit_state_system(idle_player: AnimationPlayer, pursuit_player: Anim
 
                 let diff = target_pos - current_pos.xy();
 
-                if diff.length() < 1.0 {
+                if diff.length() < CREEP_MAXIMUM_ATTACK_CHECK_DISTANCE {
 
-                    move_character(model, vec3(0., 0., -0.1), 0.01, delta_time());
-
-                    if anim_state != attack_animation_state!() {
-                        entity::set_component(
-                            anim_model,
-                            apply_animation_player(),
-                            idle_player.0,
-                        );
-                        entity::set_component(
-                            anim_model,
-                            components::anim_state(),
-                            idle_animation_state!(),
-                        );
-
+                    //TECHNOLOGICAL DEBT: Add here a state switch preparation, and I also should make an attack_target component
                         let current_path_point = get_component(model, components::next_path_point()).unwrap();
 
                         let next_path_point = match get_component(current_path_point, components::next_path_point()) {
