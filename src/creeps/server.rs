@@ -120,99 +120,6 @@ fn checks_if_creeps_should_change_their_states_system() {
 
 }
 
-fn creep_pursuit_state_system(idle_player: AnimationPlayer, pursuit_player: AnimationPlayer){
-    //TECHNOLOGICAL DEBT: this code is REALLY similar to the move code from the move state, I should encapsulate it to reduce code duplication
-    query((components::is_creep(), pursuit_target())).each_frame({
-        move |list| {
-            for (model, (_, pursuit_target)) in list {
-                
-                let anim_model = entity::get_component(model, components::anim_model()).unwrap();
-                let anim_state = entity::get_component(anim_model, components::anim_state()).unwrap();
-
-                if anim_state == attack_animation_state!() {
-                    continue;
-                }
-
-                let current_pos = entity::get_component(model, translation()).unwrap();
-
-                let target_pos = entity::get_component(pursuit_target, translation()).unwrap().xy();
-
-                let diff = target_pos - current_pos.xy();
-
-                if diff.length() < CREEP_MAXIMUM_ATTACK_CHECK_DISTANCE {
-
-                    //TECHNOLOGICAL DEBT: Add here a state switch preparation, and I also should make an attack_target component
-                        let current_path_point = get_component(model, components::next_path_point()).unwrap();
-
-                        let next_path_point = match get_component(current_path_point, components::next_path_point()) {
-                            Some(next) => next,
-                            None => current_path_point
-                        };
-
-                        set_component(model, components::next_path_point(), next_path_point);
-
-                        let next_target = get_component(next_path_point, translation()).unwrap();
-
-                        entity::set_component(model, components::target_pos(), Vec2{x:next_target.x, y:next_target.y});
-
-                        continue;
-                    }
-                }
-
-
-                //-----------------------
-
-                let target_direction = diff;
-                let initial_direction: Vec2 = Vec2::new(1.0, 0.0);
-                let dot = initial_direction.dot(target_direction);
-                let det = initial_direction.x * target_direction.y
-                    - initial_direction.y * target_direction.x;
-                let angle = det.atan2(dot);
-                let rot: Quat = Quat::from_rotation_z(angle - INIT_POS);
-                entity::set_component(model, rotation(), rot);
-
-                let speed = 0.05;
-                let displace = diff.normalize_or_zero() * speed;
-
-                if anim_state != pursuit_animation_state!() {
-                    entity::set_component(anim_model, apply_animation_player(), pursuit_player.0);
-                    entity::set_component(
-                        anim_model,
-                        components::anim_state(),
-                        pursuit_animation_state!(),
-                    );
-                }
-                let collision = move_character(
-                    model,
-                    vec3(displace.x, displace.y, -0.1),
-                    0.01,
-                    delta_time(),
-                );
-
-                if collision.side {
-                    //commented out the target_pos change as it's breaking the path finding.
-                    /*entity::set_component(
-                        model,
-                        components::target_pos(),
-                        current_pos.xy(),
-                    );*/
-                    entity::set_component(anim_model, apply_animation_player(), idle_player.0);
-                    entity::set_component(
-                        anim_model,
-                        components::anim_state(),
-                        idle_animation_state!(),
-                    );
-                }
-            }
-        }
-    });
-
-    
-
-
-
-}
-
 fn creep_move_state_system(idle_player: AnimationPlayer, walk_player: AnimationPlayer){
     let all_heroes_query = query((components::hero_model(), components::role(), components::hero_model())).build();
     let all_bases_query = query(components::base_side()).build();
@@ -435,8 +342,90 @@ fn creep_move_state_system(idle_player: AnimationPlayer, walk_player: AnimationP
     });
 }
 
-fn creep_attack_state_system(){
+fn creep_pursuit_state_system(idle_player: AnimationPlayer, pursuit_player: AnimationPlayer){
+    //TECHNOLOGICAL DEBT: this code is REALLY similar to the move code from the move state, I should encapsulate it to reduce code duplication
+    query((components::is_creep(), pursuit_target())).each_frame({
+        move |list| {
+            for (model, (_, pursuit_target)) in list {
+                
+                let anim_model = entity::get_component(model, components::anim_model()).unwrap();
+                let anim_state = entity::get_component(anim_model, components::anim_state()).unwrap();
 
+                if anim_state == attack_animation_state!() {
+                    continue;
+                }
+
+                let current_pos = entity::get_component(model, translation()).unwrap();
+
+                let target_pos = entity::get_component(pursuit_target, translation()).unwrap().xy();
+
+                let diff = target_pos - current_pos.xy();
+
+                if diff.length() < CREEP_MAXIMUM_ATTACK_CHECK_DISTANCE {
+                    //TECHNOLOGICAL DEBT: Add here a state switch preparation, and I also should make an attack_target component
+                    entity::add_component(model, attack_target(), pursuit_target);
+                    entity::set_component(model, creep_next_state(), CREEP_ATTACK_STATE);
+
+                    continue;
+                }
+
+
+                //-----------------------
+
+                let target_direction = diff;
+                let initial_direction: Vec2 = Vec2::new(1.0, 0.0);
+                let dot = initial_direction.dot(target_direction);
+                let det = initial_direction.x * target_direction.y
+                    - initial_direction.y * target_direction.x;
+                let angle = det.atan2(dot);
+                let rot: Quat = Quat::from_rotation_z(angle - INIT_POS);
+                entity::set_component(model, rotation(), rot);
+
+                let speed = 0.05;
+                let displace = diff.normalize_or_zero() * speed;
+
+                if anim_state != pursuit_animation_state!() {
+                    entity::set_component(anim_model, apply_animation_player(), pursuit_player.0);
+                    entity::set_component(
+                        anim_model,
+                        components::anim_state(),
+                        pursuit_animation_state!(),
+                    );
+                }
+                let collision = move_character(
+                    model,
+                    vec3(displace.x, displace.y, -0.1),
+                    0.01,
+                    delta_time(),
+                );
+
+                if collision.side {
+                    //commented out the target_pos change as it's breaking the path finding.
+                    /*entity::set_component(
+                        model,
+                        components::target_pos(),
+                        current_pos.xy(),
+                    );*/
+                    entity::set_component(anim_model, apply_animation_player(), idle_player.0);
+                    entity::set_component(
+                        anim_model,
+                        components::anim_state(),
+                        idle_animation_state!(),
+                    );
+                }
+            }
+        }
+    });
+}
+
+fn creep_attack_state_system(){
+    query((components::is_creep(), pursuit_target())).each_frame({
+        move |list| {
+            for (creep_model, (_, target_entity)) in list {
+                println!("Should be pursuing {:?}", target_entity);
+            }
+        }
+    });
 }
 
 
