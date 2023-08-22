@@ -355,7 +355,14 @@ fn creep_pursuit_state_system(idle_player: AnimationPlayer, pursuit_player: Anim
                     entity::set_component(model, creep_next_state(), CREEP_ATTACK_STATE);
 
                     continue;
+                } else if diff.length() > CREEP_MAXIMUM_PURSUIT_CHECK_DISTANCE {
+                    entity::set_component(model, creep_next_state(), CREEP_MOVE_STATE);
+                    
+                    continue;
                 }
+
+
+
                 //-----------------------
 
                 let target_direction = diff;
