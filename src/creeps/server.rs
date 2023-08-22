@@ -417,10 +417,10 @@ fn creep_pursuit_state_system(idle_player: AnimationPlayer, pursuit_player: Anim
 }
 
 fn creep_attack_state_system(){
-    query((components::is_creep(), pursuit_target())).each_frame({
+    query((components::is_creep(), attack_target())).each_frame({
         move |list| {
             for (creep_model, (_, target_entity)) in list {
-                println!("Should be pursuing {:?}", target_entity);
+                println!("Should be attacking {:?}", target_entity);
             }
         }
     });
