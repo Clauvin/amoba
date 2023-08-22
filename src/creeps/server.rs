@@ -61,8 +61,9 @@ pub fn main() {
     
     checks_if_creeps_should_change_their_states_system();
 
-    creep_pursuit_state_system();
     creep_move_state_system(idle_player, walk_player);
+    creep_pursuit_state_system(idle_player, pursuit_player);
+    
     creep_attack_state_system();
 
     spawns_creeps_regularly_system(idle_player);
@@ -118,7 +119,7 @@ fn checks_if_creeps_should_change_their_states_system() {
 
 }
 
-fn creep_pursuit_state_system(){
+fn creep_pursuit_state_system(idle_player: AnimationPlayer, pursuit_player: AnimationPlayer){
     query((components::is_creep(), pursuit_target())).each_frame({
         move |list| {
             for (creep_model, (_, target_entity)) in list {
