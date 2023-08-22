@@ -48,8 +48,13 @@ pub fn main() {
         asset::url("assets/anim/Zombie Walk.fbx/animations/mixamo.com.anim").unwrap(),
     );
 
+    let ranged_pursuit = PlayClipFromUrlNode::new(
+        asset::url("assets/anim/Zombie Run.fbx/animations/mixamo.com.anim").unwrap(),
+    );
+
     let idle_player = AnimationPlayer::new(&ranged_idle);
     let walk_player = AnimationPlayer::new(&ranged_walk);
+    let pursuit_player = AnimationPlayer::new(&ranged_pursuit);
 
     entity::add_component(resources(), components::spawn_timer(), TIME_TO_NEXT_CREEP_SPAWNS);
     
