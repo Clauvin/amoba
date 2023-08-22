@@ -116,10 +116,11 @@ fn creep_move_state_system(idle_player: AnimationPlayer, walk_player: AnimationP
     query(components::is_creep()).excludes(components::pursuit_target()).each_frame({
         move |list| {
 
+            let all_heroes = all_heroes_query.evaluate();
+
             for (creep_model, _) in list.iter() {
                 //TECHNOLOGICAL DEBT: There's for sure a better alternative to solve this than evaluation of this for every creep, and the rest of the other calculations too
-                let all_heroes = all_heroes_query.evaluate();
-
+                
                 let creep_team = entity::get_component(*creep_model, team()).unwrap();
 
                 let creep_position = entity::get_component(*creep_model, translation()).unwrap();
@@ -127,22 +128,22 @@ fn creep_move_state_system(idle_player: AnimationPlayer, walk_player: AnimationP
                 let mut closest_hero: Option<EntityId> = None;
                 let mut distance_of_closest_hero: Option<f32> = None;
 
-                for (hero_id, (_, hero_role, hero_model)) in all_heroes {
+                for (hero_id, (_, hero_role, hero_model)) in &all_heroes {
                     if creep_team%2 != hero_role%2 {
-                        let current_hero_position = entity::get_component(hero_model, translation()).unwrap();
+                        let current_hero_position = entity::get_component(*hero_model, translation()).unwrap();
 
                         let distance_of_current_hero = (creep_position.xy() - current_hero_position.xy()).length();
 
                         match closest_hero {
                             None => {
                                 if distance_of_current_hero <= CREEP_MAXIMUM_PURSUIT_CHECK_DISTANCE {
-                                    closest_hero = Some(hero_model);
+                                    closest_hero = Some(*hero_model);
                                     distance_of_closest_hero = Some(distance_of_current_hero);
                                 }
                             }
                             Some(_) => {
                                 if distance_of_current_hero < distance_of_closest_hero.unwrap() {
-                                    closest_hero = Some(hero_id);
+                                    closest_hero = Some(*hero_id);
                                     distance_of_closest_hero = Some(distance_of_current_hero);
                                 }
                             }
