@@ -14,6 +14,9 @@ use ambient_api::{
     prelude::*,
 };
 
+const MARS_TEAM: u32 = 0;
+const JUPYTER_TEAM: u32 = 1;
+
 #[main]
 pub fn main() {
     let mars_ball = Entity::new()
@@ -39,6 +42,8 @@ pub fn main() {
         .spawn();
 
     spawn_mars_spawn_points_and_paths();
+
+    spawn_jupyter_spawn_points_and_paths();
 
     query((components::health(), components::base_side())).each_frame(|list| {
         for (base_id, (health, side)) in list {
@@ -134,7 +139,7 @@ fn spawn_mars_left_spawn_path(){
     let path_point_mars_left_spawn = Entity::new()
         .with(translation(), vec3(13., 13., 1.))
         .with(components::is_path_point(), true)
-        .with(components::is_first_mars_point(), true)
+        .with(components::is_creep_spawn_point(), MARS_TEAM)
         .spawn();
 
     let path_point_mars_left_middle_of_path = Entity::new()
@@ -156,7 +161,7 @@ fn spawn_mars_middle_spawn_path(){
     let path_point_mars_middle_spawn = Entity::new()
         .with(translation(), vec3(13.,13.,1.))
         .with(components::is_path_point(), true)
-        .with(components::is_first_mars_point(), true)
+        .with(components::is_creep_spawn_point(), MARS_TEAM)
         .spawn();
 
     let path_point_mars_middle_end_of_path = Entity::new()
@@ -171,7 +176,7 @@ fn spawn_mars_right_spawn_path(){
     let path_point_mars_right_spawn = Entity::new()
         .with(translation(), vec3(13., 13., 1.))
         .with(components::is_path_point(), true)
-        .with(components::is_first_mars_point(), true)
+        .with(components::is_creep_spawn_point(), MARS_TEAM)
         .spawn();
 
     let path_point_mars_right_middle_of_path = Entity::new()
@@ -188,5 +193,75 @@ fn spawn_mars_right_spawn_path(){
 
     entity::add_component(path_point_mars_right_middle_of_path, components::next_path_point(), path_point_mars_right_end_of_path);
 
+}
 
+fn spawn_jupyter_spawn_points_and_paths(){
+    spawn_jupyter_left_spawn_path();
+
+    spawn_jupyter_middle_spawn_path();
+
+    spawn_jupyter_right_spawn_path();
+}
+
+fn spawn_jupyter_left_spawn_path(){
+
+    let path_point_jupyter_left_spawn = Entity::new()
+        .with(translation(), vec3(-14., -11., 1.))
+        .with(components::is_path_point(), true)
+        .with(components::is_creep_spawn_point(), JUPYTER_TEAM)
+        .spawn();
+
+    let path_point_jupyter_left_middle_of_path = Entity::new()
+        .with(translation(), vec3(-14., 13., 1.))
+        .with(components::is_path_point(), true)
+        .spawn();
+
+    entity::add_component(path_point_jupyter_left_spawn, components::next_path_point(), path_point_jupyter_left_middle_of_path);
+
+    let path_point_jupyter_left_end_of_path = Entity::new()
+        .with(translation(), vec3(13., 13., 1.))
+        .with(components::is_path_point(), true)
+        .spawn();
+
+    entity::add_component(path_point_jupyter_left_middle_of_path, components::next_path_point(), path_point_jupyter_left_end_of_path);
+
+}
+
+fn spawn_jupyter_middle_spawn_path(){
+    let path_point_jupyter_middle_spawn = Entity::new()
+        .with(translation(), vec3(-13., -13., 1.))
+        .with(components::is_path_point(), true)
+        .with(components::is_creep_spawn_point(), JUPYTER_TEAM)
+        .spawn();
+
+    let path_point_jupyter_middle_end_of_path = Entity::new()
+        .with(translation(), vec3(13.,13.,1.))
+        .with(components::is_path_point(), true)
+        .spawn();
+
+    entity::add_component(path_point_jupyter_middle_spawn, components::next_path_point(), path_point_jupyter_middle_end_of_path);
+
+    
+}
+
+fn spawn_jupyter_right_spawn_path(){
+    let path_point_jupyter_right_spawn = Entity::new()
+    .with(translation(), vec3(-11., -14., 1.))
+    .with(components::is_path_point(), true)
+    .with(components::is_creep_spawn_point(), JUPYTER_TEAM)
+    .spawn();
+
+    let path_point_jupyter_right_middle_of_path = Entity::new()
+        .with(translation(), vec3(13., -14., 1.))
+        .with(components::is_path_point(), true)
+        .spawn();
+
+    entity::add_component(path_point_jupyter_right_spawn, components::next_path_point(), path_point_jupyter_right_middle_of_path);
+
+    let path_point_jupyter_right_end_of_path = Entity::new()
+        .with(translation(), vec3(13., 13., 1.))
+        .with(components::is_path_point(), true)
+        .spawn();
+
+    entity::add_component(path_point_jupyter_right_middle_of_path, components::next_path_point(), path_point_jupyter_right_end_of_path);
 }

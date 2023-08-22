@@ -5,7 +5,7 @@ health = { type = "I32", name = "health", description = "health 0-100, avoid U8 
     "Networked",
 ] }
 
-base_side = { type = "U8", name = "base_side", description = "which side this base belongs to, 0=>Mars, 1=>Jupyter", attributes = [
+base_side = { type = "U32", name = "base_side", description = "which side this base belongs to, 0=>Mars, 1=>Jupyter", attributes = [
     "Debuggable",
     "Networked",
 ] }
@@ -14,7 +14,15 @@ is_path_point = { type = "Bool", name = "is_path_point", description = "path poi
     "Debuggable",
 ] }
 
+is_creep_spawn_point = {type = "U32", name = "is_creep_spawn_point", description = "from where creeps spawn. 0 = Mars spawn point, 1 = Jupyter spawn point", atributes = [
+    "Debuggable",
+] }
+
 is_first_mars_point = { type = "Bool", name = "is_first_mars_point", description = "first mars point, from where mars creep spawns happen", atributes = [
+    "Debuggable",
+] }
+
+is_first_jupyter_point = { type = "Bool", name = "is_first_jupyter_point", description = "first jupyter point, from where jupyter creep spawns happen", atributes = [
     "Debuggable",
 ] }
 
