@@ -108,6 +108,18 @@ fn App(hooks: &mut Hooks) -> Element {
         .with(translation(), blue_pos)
         .with_margin_even(5.0);
 
+    let map_rectangles_to_draw = query((translation(), components::map_rectangle(), components::map_rectangle_color())).build().evaluate();
+
+    for (_,(position, rectangle_size, rectangle_color)) in map_rectangles_to_draw {
+        let rectangle_drawn = Rectangle::el()
+            .with(width(), rectangle_size.x)
+            .with(height(), rectangle_size.y)
+            .with(background_color(), rectangle_color)
+            .with(translation(), position)
+            .with_margin_even(5.0);
+    }
+
+
     let map = Rectangle::el()
         .with(width(), 80.)
         .with(height(), 80.)
