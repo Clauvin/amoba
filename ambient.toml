@@ -8,7 +8,6 @@ includes = [
     "src/scene/ambient.toml",
     "src/ui/ambient.toml",
     "src/player/ambient.toml",
-    "src/map/ambient.toml",
 ]
 
 [messages.player_walk.fields]
