@@ -9,8 +9,3 @@ map_rectangle_color = { type = "Vec4", name = "map_rectangle_color", description
     "Debuggable",
     "Networked",
 ]}
-
-target_pos = { type = "Vec2", name = "target_pos", description = "target_pos", attributes = [
-    "Debuggable",
-    "Networked",
-] }
