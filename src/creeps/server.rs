@@ -15,7 +15,7 @@ use ambient_api::{
     physics::move_character, 
     prelude::{
         Quat, Entity, EntityId, Vec3, Vec2, Vec3Swizzles,
-        vec3, delta_time, 
+        vec3, delta_time, vec4, Vec4, 
     }, main, 
 };
 use components::{team, is_creep, creep_current_state, creep_next_state, pursuit_target, attack_target};
