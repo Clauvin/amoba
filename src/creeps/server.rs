@@ -465,10 +465,17 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
         .spawn();
 
     let mut creep_model_address = "";
+    let mut map_rectangle_color: Vec4;
 
     match which_team{
-        MARS_TEAM => creep_model_address = "assets/model/copzombie_l_actisdato.fbx",
-        JUPYTER_TEAM => creep_model_address = "assets/model/X Bot.fbx",
+        MARS_TEAM => {
+            creep_model_address = "assets/model/copzombie_l_actisdato.fbx";
+            map_rectangle_color = vec4(1., 0., 0., 1.);
+        },
+        JUPYTER_TEAM => { 
+            creep_model_address = "assets/model/X Bot.fbx";
+            map_rectangle_color = vec4(0., 0., 1., 1.);
+        },
         2_u32..=u32::MAX => panic!("Hang on, we have neutral creeps now?")
     }
     
@@ -485,6 +492,9 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
         .with_default(local_to_world())
         .with(translation(), vec3(0.0, 0.0, 0.))
         .spawn();
+
+    entity::add_component(model, components::map_rectangle_color(), map_rectangle_color);
+    entity::add_component(model, components::map_rectangle(), Vec2{x:1., y:1.});
 
     entity::add_component(model, components::is_creep(), ());    
 
