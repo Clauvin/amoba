@@ -109,23 +109,28 @@ fn App(hooks: &mut Hooks) -> Element {
         .with_margin_even(5.0);
 
     let map_rectangles_to_draw = query((translation(), components::map_rectangle(), components::map_rectangle_color())).build().evaluate();
+    let mut children_of_the_map = vec![red_dot, blue_dot, player_rect, cam_rect];
 
     for (_,(position, rectangle_size, rectangle_color)) in map_rectangles_to_draw {
+        //let map_position = 
+
+
         let rectangle_drawn = Rectangle::el()
             .with(width(), rectangle_size.x)
             .with(height(), rectangle_size.y)
             .with(background_color(), rectangle_color)
             .with(translation(), position)
             .with_margin_even(5.0);
-    }
 
+        children_of_the_map.push(rectangle_drawn);
+    }
 
     let map = Rectangle::el()
         .with(width(), 80.)
         .with(height(), 80.)
         .with(background_color(), vec4(0.5, 0.5, 0.5, 1.))
         .with_margin_even(10.0)
-        .children(vec![red_dot, blue_dot, player_rect, cam_rect]);
+        .children(children_of_the_map);
     let canvas = WindowSized::el([Dock::el([FlowRow::el([map])
         .with_background(vec4(1., 1., 1., 0.02))
         .with_default(fit_vertical_none())
