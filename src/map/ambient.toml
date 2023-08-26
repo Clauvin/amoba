@@ -1,0 +1,16 @@
+[components]
+
+map_rectangle = { type = "Vec2", name = "map_rectangle", description = "size of the rectangle of an entity to show it in the map", attributes = [
+    "Debuggable",
+    "Networked",
+]}
+
+map_rectangle_color = { type = "Vec4", name = "map_rectangle_color", description = "color of the rectangle of an entity to show in the map", attributes = [
+    "Debuggable",
+    "Networked",
+]}
+
+target_pos = { type = "Vec2", name = "target_pos", description = "target_pos", attributes = [
+    "Debuggable",
+    "Networked",
+] }
