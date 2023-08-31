@@ -112,18 +112,18 @@ fn App(hooks: &mut Hooks) -> Element {
     let mut children_of_the_map = vec![red_dot, blue_dot, player_rect, cam_rect];
 
     for (_,(position, rectangle_size, rectangle_color)) in map_rectangles_to_draw {
-        //let map_position = 
-        if let Some(role) = role {
-
-        } else {
-
+        let mut rectangle_map_position = vec3(0., 0., -1.);
+        match role {
+            Some(1) => {rectangle_map_position = vec3(position.x / 30.0 * 70.0, 70.0 - position.y / 30.0 * 70.0, -1.);}
+            Some(_) => {rectangle_map_position = vec3(position.x, 70.0 - position.y, -1.);}
+            None => {panic!("Wait, how did we have a role equal to none?");}
         }
 
         let rectangle_drawn = Rectangle::el()
             .with(width(), rectangle_size.x)
             .with(height(), rectangle_size.y)
-            .with(background_color(), vec4(0., 0., 1., 1.))
-            .with(translation(), vec3(40.0, 35.0, -0.1))
+            .with(background_color(), rectangle_color)
+            .with(translation(), rectangle_map_position)
             .with_margin_even(5.0);
 
         children_of_the_map.push(rectangle_drawn);
