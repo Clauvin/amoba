@@ -494,7 +494,7 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
         .spawn();
 
     entity::add_component(model, components::map_rectangle_color(), map_rectangle_color);
-    entity::add_component(model, components::map_rectangle(), Vec2{x:1., y:1.});
+    entity::add_component(model, components::map_rectangle(), Vec2{x:2., y:2.});
 
     entity::add_component(model, components::is_creep(), ());    
 
