@@ -9,6 +9,9 @@ use ambient_api::components::core::{
 };
 use ambient_api::prelude::*;
 
+const MARS_TEAM: u32 = 0;
+const JUPYTER_TEAM: u32 = 1;
+
 #[main]
 pub fn main() {
     App.el().spawn_interactive();
@@ -45,16 +48,7 @@ fn App(hooks: &mut Hooks) -> Element {
         let cam_look = w.get(cam, lookat_target()).unwrap();
         let cam_look = cam_look.xy();
         match role.unwrap() % 2 {
-            1 => {
-                let home = vec2(-15.0, -15.0);
-                let x = pos.y - home.x;
-                let y = pos.x - home.y;
-                let camx = cam_look.y - home.x;
-                let camy = cam_look.x - home.y;
-                set_camera_pos(vec2(camx / 30.0 * 70.0, 70.0 - camy / 30.0 * 70.0));
-                set_player_pos(vec2(x / 30.0 * 70.0, 70.0 - y / 30.0 * 70.0));
-            }
-            _ => {
+            MARS_TEAM => {
                 let home = vec2(15.0, 15.0);
                 let x = (home.x - pos.y) / 30.0 * 70.0;
                 let y = (home.y - pos.x) / 30.0 * 70.0;
@@ -63,6 +57,16 @@ fn App(hooks: &mut Hooks) -> Element {
                 set_camera_pos(vec2(camx, 70.0 - camy));
                 set_player_pos(vec2(x, 70.0 - y));
             }
+            JUPYTER_TEAM => {
+                let home = vec2(-15.0, -15.0);
+                let x = pos.y - home.x;
+                let y = pos.x - home.y;
+                let camx = cam_look.y - home.x;
+                let camy = cam_look.x - home.y;
+                set_camera_pos(vec2(camx / 30.0 * 70.0, 70.0 - camy / 30.0 * 70.0));
+                set_player_pos(vec2(x / 30.0 * 70.0, 70.0 - y / 30.0 * 70.0));
+            }
+            _ => {panic!{"We shouldn't have a value different of 0 and 1 here..."}}
         };
     });
 
