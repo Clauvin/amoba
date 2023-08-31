@@ -114,16 +114,28 @@ fn App(hooks: &mut Hooks) -> Element {
     for (_,(position, rectangle_size, rectangle_color)) in map_rectangles_to_draw {
         let mut rectangle_map_position = vec3(0., 0., -1.);
         match role {
-            Some(1) => {rectangle_map_position = vec3(position.x / 30.0 * 70.0,
-                                                     70.0 - position.y / 30.0 * 70.0,
+            //TECHNICAL DEBT: need to make the "map calculation" simpler, or encapsulated.
+            Some(1) => {
+                let home = vec2(-15.0, -15.0);
+                let x = position.y - home.x;
+                let y = position.x - home.y;
+                rectangle_map_position = vec3(x / 30.0 * 70.0,
+                                                     70.0 - y / 30.0 * 70.0,
                                                      -0.1);}
-            Some(_) => {rectangle_map_position = vec3(position.x,
-                                                     70.0 - position.y,
+            Some(_) => {
+                let home = vec2(15.0, 15.0);
+                let x = (home.x - position.y) / 30.0 * 70.0;
+                let y = (home.y - position.x) / 30.0 * 70.0;
+                rectangle_map_position = vec3(x,
+                                                     70.0 - y,
                                                       -0.1);}
             None => {panic!("Wait, how did we have a role equal to none?");}
         }
 
+        println!("---------------");
+        println!("{}", position);
         println!("{}", rectangle_map_position);
+        println!("---------------");
 
         let rectangle_drawn = Rectangle::el()
             .with(width(), rectangle_size.x)
