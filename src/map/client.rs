@@ -66,7 +66,7 @@ fn App(hooks: &mut Hooks) -> Element {
                 set_camera_pos(vec2(camx / 30.0 * 70.0, 70.0 - camy / 30.0 * 70.0));
                 set_player_pos(vec2(x / 30.0 * 70.0, 70.0 - y / 30.0 * 70.0));
             }
-            _ => {panic!{"We shouldn't have a value different of 0 and 1 here..."}}
+            _ => {panic!("We shouldn't have a value different of 0 and 1 here...");}
         };
     });
 
@@ -117,23 +117,24 @@ fn App(hooks: &mut Hooks) -> Element {
 
     for (_,(position, rectangle_size, rectangle_color)) in map_rectangles_to_draw {
         let mut rectangle_map_position = vec3(0., 0., -1.);
-        match role {
+        let hero_role = role.unwrap() % 2;
+        match hero_role {
             //TECHNICAL DEBT: need to make the "map calculation" simpler, or encapsulated.
-            Some(1) => {
-                let home = vec2(-15.0, -15.0);
-                let x = position.y - home.x;
-                let y = position.x - home.y;
-                rectangle_map_position = vec3(x / 30.0 * 70.0,
-                                                     70.0 - y / 30.0 * 70.0,
-                                                     -0.1);}
-            Some(_) => {
+            MARS_TEAM => {
                 let home = vec2(15.0, 15.0);
                 let x = (home.x - position.y) / 30.0 * 70.0;
                 let y = (home.y - position.x) / 30.0 * 70.0;
                 rectangle_map_position = vec3(x,
                                                      70.0 - y,
                                                       -0.1);}
-            None => {panic!("Wait, how did we have a role equal to none?");}
+            JUPYTER_TEAM => {
+                let home = vec2(-15.0, -15.0);
+                let x = position.y - home.x;
+                let y = position.x - home.y;
+                rectangle_map_position = vec3(x / 30.0 * 70.0,
+                                                     70.0 - y / 30.0 * 70.0,
+                                                     -0.1);}
+            _ => {panic!("We shouldn't have a value different of 0 and 1 here...");}
         }
 
         let rectangle_drawn = Rectangle::el()
