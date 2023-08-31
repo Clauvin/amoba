@@ -90,8 +90,8 @@ fn App(hooks: &mut Hooks) -> Element {
     let (red_pos, blue_pos) = {
         if let Some(role) = role {
             match role % 2 {
-                MARS_TEAM => (vec3(0.0, 75.0, -0.1), vec3(75.0, 0.0, -0.1)),
-                JUPYTER_TEAM => (vec3(75.0, 0.0, -0.1), vec3(0.0, 75.0, -0.1)),
+                MARS_TEAM => (vec3(0.0, 70.0, -0.1), vec3(70.0, 0.0, -0.1)),
+                JUPYTER_TEAM => (vec3(70.0, 0.0, -0.1), vec3(0.0, 70.0, -0.1)),
                 _ => {panic!("We shouldn't have a value different of 0 and 1 here...");}
             }
         } else {
@@ -148,8 +148,8 @@ fn App(hooks: &mut Hooks) -> Element {
     }
 
     let map = Rectangle::el()
-        .with(width(), 70.)
-        .with(height(), 70.)
+        .with(width(), 75.)
+        .with(height(), 75.)
         .with(background_color(), vec4(0.5, 0.5, 0.5, 1.))
         .with_margin_even(10.0)
         .children(children_of_the_map);
