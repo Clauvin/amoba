@@ -113,13 +113,19 @@ fn App(hooks: &mut Hooks) -> Element {
 
     for (_,(position, rectangle_size, rectangle_color)) in map_rectangles_to_draw {
         //let map_position = 
+        if let Some(role) = role {
+
+        } else {
+
+        }
+
 
 
         let rectangle_drawn = Rectangle::el()
             .with(width(), rectangle_size.x)
             .with(height(), rectangle_size.y)
             .with(background_color(), rectangle_color)
-            .with(translation(), position)
+            .with(translation(), vec3(35.0, 35.0, -0.1))
             .with_margin_even(5.0);
 
         children_of_the_map.push(rectangle_drawn);
@@ -131,6 +137,7 @@ fn App(hooks: &mut Hooks) -> Element {
         .with(background_color(), vec4(0.5, 0.5, 0.5, 1.))
         .with_margin_even(10.0)
         .children(children_of_the_map);
+
     let canvas = WindowSized::el([Dock::el([FlowRow::el([map])
         .with_background(vec4(1., 1., 1., 0.02))
         .with_default(fit_vertical_none())
