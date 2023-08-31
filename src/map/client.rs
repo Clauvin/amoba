@@ -132,11 +132,6 @@ fn App(hooks: &mut Hooks) -> Element {
             None => {panic!("Wait, how did we have a role equal to none?");}
         }
 
-        println!("---------------");
-        println!("{}", position);
-        println!("{}", rectangle_map_position);
-        println!("---------------");
-
         let rectangle_drawn = Rectangle::el()
             .with(width(), rectangle_size.x)
             .with(height(), rectangle_size.y)
