@@ -417,7 +417,7 @@ fn creep_attack_state_system(){
     query((components::is_creep(), attack_target())).each_frame({
         move |list| {
             for (creep_model, (_, target_entity)) in list {
-                println!("Should be attacking {:?}", target_entity);
+                //println!("Should be attacking {:?}", target_entity);
             }
         }
     });
