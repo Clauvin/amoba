@@ -119,13 +119,11 @@ fn App(hooks: &mut Hooks) -> Element {
 
         }
 
-
-
         let rectangle_drawn = Rectangle::el()
-            .with(width(), rectangle_size.x)
-            .with(height(), rectangle_size.y)
-            .with(background_color(), rectangle_color)
-            .with(translation(), vec3(35.0, 35.0, -0.1))
+            .with(width(), 5.)
+            .with(height(), 5.)
+            .with(background_color(), vec4(0., 0., 1., 1.))
+            .with(translation(), vec3(40.0, 35.0, -0.1))
             .with_margin_even(5.0);
 
         children_of_the_map.push(rectangle_drawn);
