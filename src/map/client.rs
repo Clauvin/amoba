@@ -142,15 +142,14 @@ fn App(hooks: &mut Hooks) -> Element {
             .with(width(), rectangle_size.x)
             .with(height(), rectangle_size.y)
             .with(background_color(), rectangle_color)
-            .with(translation(), rectangle_map_position)
-            .with_margin_even(5.0);
+            .with(translation(), rectangle_map_position);
 
         children_of_the_map.push(rectangle_drawn);
     }
 
     let map = Rectangle::el()
-        .with(width(), 80.)
-        .with(height(), 80.)
+        .with(width(), 70.)
+        .with(height(), 70.)
         .with(background_color(), vec4(0.5, 0.5, 0.5, 1.))
         .with_margin_even(10.0)
         .children(children_of_the_map);
