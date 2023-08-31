@@ -90,8 +90,9 @@ fn App(hooks: &mut Hooks) -> Element {
     let (red_pos, blue_pos) = {
         if let Some(role) = role {
             match role % 2 {
-                1 => (vec3(70.0, 5.0, -0.1), vec3(5.0, 70.0, -0.1)),
-                _ => (vec3(5.0, 70.0, -0.1), vec3(70.0, 5.0, -0.1)),
+                MARS_TEAM => (vec3(0.0, 75.0, -0.1), vec3(75.0, 0.0, -0.1)),
+                JUPYTER_TEAM => (vec3(75.0, 0.0, -0.1), vec3(0.0, 75.0, -0.1)),
+                _ => {panic!("We shouldn't have a value different of 0 and 1 here...");}
             }
         } else {
             (vec3(0.0, 0.0, -0.1), vec3(0.0, 0.0, -0.1))
