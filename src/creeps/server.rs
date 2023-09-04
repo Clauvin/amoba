@@ -514,24 +514,28 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
     model
 }
 
-fn create_pursuing_projectile(){
+fn create_pursuing_projectile() -> EntityId {
     /*Copied code from afps
     
-    
     Entity::new()
-                            .with_merge(make_transformable())
-                            .with(cube(), ())
-                            .with(rotation(), rot)
-                            .with(physics_controlled(), ())
+                            .with_merge(make_sphere())
                             .with(cast_shadows(), ())
-                            .with(linear_velocity(), new_linear_velocity)
-                            .with(angular_velocity(), new_angular_velocity)
-                            // .with(linear_velocity(), vec3(0.0, 0.0, 10.0)) //random::<Vec3>() * 20.0 - 10.0)
-                            // .with(angular_velocity(), random::<Vec3>() * 1.0)
-                            .with(cube_collider(), Vec3::ONE)
+                            .with(speed(), "add speed value here")
+                            .with(cube_collider(), "add cube size here?")
                             .with(dynamic(), true)
-                            .with(scale(), random::<Vec3>() * size * 2.0)
+                            .with(scale(), "add scale here")
                             .with(translation(), pos)
                             .with(color(), c)
-                            .spawn(); */
+                            .with("create here who_shot component")
+                            .with("create here who_is_the_target component")
+                            .with("create here target_position component")
+                            .spawn(); 
+                        
+
+    
+                        
+    */
+
+
+
 }
