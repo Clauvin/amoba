@@ -417,7 +417,7 @@ fn creep_attack_state_system(){
     query((components::is_creep(), attack_target())).each_frame({
         move |list| {
             for (creep_model, (_, target_entity)) in list {
-                //println!("Should be attacking {:?}", target_entity);
+                create_projectile();
             }
         }
     });
@@ -512,4 +512,8 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
     entity::add_component(model, components::target_pos(), Vec2{x:target.x, y:target.y});
 
     model
+}
+
+fn create_projectile(){
+    println!("Create projectile.");
 }
