@@ -2,15 +2,15 @@ use ambient_api::{
     animation::{PlayClipFromUrlNode, AnimationPlayer},
     asset, 
     components::core::{
-        transform::{translation, local_to_world, rotation, local_to_parent},
-        physics::{character_controller_height, character_controller_radius, dynamic, physics_controlled},
+        transform::{translation, local_to_world, rotation, local_to_parent, scale},
+        physics::{character_controller_height, character_controller_radius, dynamic, physics_controlled, cube_collider},
         app::name,
         ecs::{parent, children},
         prefab::prefab_from_url,
-        animation::apply_animation_player,
+        animation::{apply_animation_player, speed}, rendering::{cast_shadows, color},
     },
     ecs::query,
-    concepts::make_transformable,
+    concepts::{make_transformable, make_sphere},
     entity::{self, get_component, set_component, resources}, 
     physics::move_character, 
     prelude::{
@@ -417,7 +417,8 @@ fn creep_attack_state_system(){
     query((components::is_creep(), attack_target())).each_frame({
         move |list| {
             for (creep_model, (_, target_entity)) in list {
-                create_pursuing_projectile();
+                create_pursuing_projectile(0.0, Vec3{x:10.0, y:10.0, z:10.0}, Vec3{x:10.0, y:10.0, z:10.0},
+                    Vec3{x:0.0, y:0.0, z:0.0}, Vec4{ x:1.0, y:1.0, z:1.0, w:1.0});
             }
         }
     });
@@ -514,7 +515,7 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
     model
 }
 
-fn create_pursuing_projectile() -> EntityId {
+fn create_pursuing_projectile(proj_speed: f32, cube_collider_size: Vec3, proj_scale: Vec3, proj_translation: Vec3, proj_color: Vec4) -> EntityId {
     /*Copied code from afps
     
     Entity::new()
@@ -529,12 +530,20 @@ fn create_pursuing_projectile() -> EntityId {
                             .with("create here who_shot component")
                             .with("create here who_is_the_target component")
                             .with("create here target_position component")
-                            .spawn(); 
-                        
-
-    
-                        
+                            .spawn();         
     */
+
+    Entity::new()
+        .with_merge(make_sphere())
+        .with(cast_shadows(), ())
+        .with(speed(), proj_speed)
+        .with(cube_collider(), cube_collider_size)
+        .with(dynamic(), true)
+        .with(scale(), proj_scale)
+        .with(translation(), proj_translation)
+        .with(color(), proj_color)
+        .spawn()
+
 
 
 
