@@ -34,3 +34,7 @@ pursuit_target = { type = "EntityId", name = "pursuit_target", description = "ta
 attack_target = { type = "EntityId", name = "attack_target", description = "target for the creep to attack in its pursuit state", attributes = [
     "Debuggable",
 ]}
+
+projectile_speed_vector = { type = "EntityId", name = "projectile_speed_vector", description = "speed vector for projectiles", attributes = [
+    "Debuggable",
+]}
