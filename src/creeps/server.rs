@@ -36,6 +36,8 @@ const CREEP_MAXIMUM_ATTACK_CHECK_DISTANCE: f32 = 5.;
 
 const CREEP_MOVE_STATE_SPEED: f32 = 0.05;
 
+const CREEP_PROJECTILE_SPEED: f32 = 2.;
+
 macro_rules! idle_animation_state { () => { vec![1.0, 0.0, 0.0, 0.0] }; }
 macro_rules! walk_animation_state { () => { vec![0.0, 1.0, 0.0, 0.0] }; }
 macro_rules! pursuit_animation_state { () => { vec![0.0, 0.0, 1.0, 0.0] }; }
