@@ -35,6 +35,6 @@ attack_target = { type = "EntityId", name = "attack_target", description = "targ
     "Debuggable",
 ]}
 
-projectile_speed_vector = { type = "EntityId", name = "projectile_speed_vector", description = "speed vector for projectiles", attributes = [
+projectile_speed_vector = { type = "Vec3", name = "projectile_speed_vector", description = "speed vector for projectiles", attributes = [
     "Debuggable",
 ]}
