@@ -517,7 +517,7 @@ fn create_ranged_creep(init_pos: Vec3, idle_player:AnimationPlayer, next_path_po
     model
 }
 
-fn create_pursuing_projectile(proj_speed: f32, cube_collider_size: Vec3, proj_scale: Vec3, proj_translation: Vec3, proj_color: Vec4) -> EntityId {
+fn create_pursuing_projectile(proj_speed_vector: Vec3, cube_collider_size: Vec3, proj_scale: Vec3, proj_translation: Vec3, proj_color: Vec4) -> EntityId {
     /*Copied code from afps
     
     Entity::new()
@@ -538,7 +538,7 @@ fn create_pursuing_projectile(proj_speed: f32, cube_collider_size: Vec3, proj_sc
     Entity::new()
         .with_merge(make_sphere())
         .with(cast_shadows(), ())
-        .with(speed(), proj_speed)
+        .with(projectile_speed_vector(), proj_speed_vector)
         .with(cube_collider(), cube_collider_size)
         .with(dynamic(), true)
         .with(scale(), proj_scale)
