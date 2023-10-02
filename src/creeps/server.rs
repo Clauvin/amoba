@@ -419,7 +419,13 @@ fn creep_attack_state_system(){
     query((components::is_creep(), attack_target())).each_frame({
         move |list| {
             for (creep_model, (_, target_entity)) in list {
-                create_pursuing_projectile(0.0, Vec3{x:10.0, y:10.0, z:10.0}, Vec3{x:1.0, y:1.0, z:1.0},
+                let projectile_direction = 
+                    entity::get_component(target_entity, translation()).unwrap() -
+                    entity::get_component(creep_model, translation()).unwrap();
+                let projectile_direction = 
+                    projectile_direction.normalize();
+                create_pursuing_projectile(projectile_direction * CREEP_PROJECTILE_SPEED,
+                    Vec3{x:1.0, y:1.0, z:1.0}, Vec3{x:1.0, y:1.0, z:1.0},
                     Vec3{x:0.0, y:0.0, z:0.0}, Vec4{ x:1.0, y:1.0, z:1.0, w:1.0});
             }
         }
